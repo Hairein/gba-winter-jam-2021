@@ -1,2 +1,3 @@
 # Various export commands for different development platforms
-export BUTANO_SDK="/home/mkoleoso/GitHub/butano/butano"
+export BUTANO_SDK="/home/mkoleoso/GitHub/butano"
+export BUTANO_SDK="/home/mkoleoso/Data/GitHub/butano"

@@ -23,13 +23,13 @@
 #---------------------------------------------------------------------------------------------------------------------
 TARGET      :=  $(notdir $(CURDIR))
 BUILD       :=  build
-LIBBUTANO   :=  $(BUTANO_SDK)
+LIBBUTANO   :=  $(BUTANO_SDK)/butano
 PYTHON      :=  python3
-SOURCES     :=  src
-INCLUDES    :=  include
+SOURCES     :=  src ../common/src $(BUTANO_SDK)/butano/src
+INCLUDES    :=  include ../common/include $(BUTANO_SDK)/butano/include
 DATA        :=
-GRAPHICS    :=  graphics
-AUDIO       :=  audio
+GRAPHICS    :=  graphics ../common/graphics
+AUDIO       :=  audio ../common/audio
 ROMTITLE    :=  mks_gbawj21_game
 ROMCODE     :=  SBTP
 USERFLAGS   :=  
