@@ -7,8 +7,7 @@
 #include "common_info.h"
 #include "common_variable_8x16_sprite_font.h"
 
-#include "bn_regular_bg_items_test_pattern.h"
-#include "bn_regular_bg_items_layout.h"
+#include "bn_regular_bg_items_test_pattern1.h"
 
 #include "Game.h"
 
@@ -25,8 +24,8 @@ int main()
 
     common::info info("MKS Game", info_text_lines, text_generator);
 
-    auto test_pattern_bg = bn::regular_bg_items::test_pattern.create_bg(0,0);
-    //auto layout_bg = bn::regular_bg_items::layout.create_bg(64,0);
+    auto test_pattern_bg = bn::regular_bg_items::test_pattern1.create_bg(0,0);
+    test_pattern_bg.set_priority(0);
 
     while(true)
     {
