@@ -3,37 +3,56 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "world.tmx",
+    "activeFile": "test_192x192_tiles.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "Alle Dateien (*)",
     "fileStates": {
+        "test_192x192_tiles.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 431.75,
+                "y": 386.875
+            }
+        },
         "world.tmx": {
             "scale": 3.3435546874999997,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 124.11939949763423,
-                "y": 128.15701851743677
+                "x": 123.52123371692275,
+                "y": 126.9606869560138
+            }
+        },
+        "world1024.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 500,
+                "y": 522
             }
         },
         "world_tiles.tsx": {
-            "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
         }
     },
     "last.imagePath": "/home/mkoleoso/Data/GitHub/gba-winter-jam-2021/maps",
-    "map.height": 32,
+    "map.height": 192,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 32,
+    "map.width": 192,
     "openFiles": [
         "world_tiles.tsx",
-        "world.tmx"
+        "test_192x192_tiles.tmx"
     ],
     "project": "game.tiled-project",
     "recentFiles": [
         "world_tiles.tsx",
-        "world.tmx"
+        "test_192x192_tiles.tmx",
+        "world.tmx",
+        "world1024.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
