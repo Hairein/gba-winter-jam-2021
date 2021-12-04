@@ -1,31 +1,34 @@
-#include "bn_fixed_point.h"
-#include "bn_string.h"
-#include "bn_sprite_text_generator.h"
-
-#include "bn_regular_bg_items_test_pattern.h"
-#include "bn_regular_bg_items_layout.h"
-
 #include "bn_keypad.h"
 
-#include "Game.h"
+#include "ingame.h"
 
 namespace mks
 {
-    Game::Game()
+    Ingame::Ingame()
     {
     }
     
-    Game::~Game()
+    Ingame::~Ingame()
     {
     }
 
-    void Game::init()
+    void Ingame::init()
     {
+        next_game_state = GameState::NONE;
+
+        player_position.set_x(0);
+        player_position.set_y(0);
+        player_yaw_rotation = 0;
+ 
     }
 
-    void Game::handle_player_navigation(bn::fixed_point& player_position, bn::fixed& player_yaw_rotation)
+    void Ingame::update()
     {
-        quit_ingame = bn::keypad::start_released();
+        if(bn::keypad::start_released())
+        {
+            next_game_state = GameState::TITLE;
+            return;
+        }
 
         if(bn::keypad::left_held())
         {
@@ -73,8 +76,18 @@ namespace mks
         }
     }
 
-    bool Game::quit()
+    bn::fixed_point Ingame::get_player_position()
     {
-        return quit_ingame;
+        return player_position;
+    }
+
+    bn::fixed Ingame::get_player_yaw_rotation()
+    {
+        return player_yaw_rotation;
+    }
+
+    GameState Ingame::change_game_state()
+    {
+        return next_game_state;
     }
 }

@@ -20,17 +20,10 @@
 #include "bn_affine_bg_items_world.h"
 #include "bn_regular_bg_items_layout.h"
 
-#include "Game.h"
+#include "globals.h"
 
-enum GameState 
-{
-    NONE, 
-    START, 
-    TITLE,
-    SETTINGS,
-    CREDITS,
-    INGAME
-};
+#include "title.h"
+#include "ingame.h"
 
 int main();
 void move_to_game_state(GameState new_game_state, 
@@ -38,8 +31,8 @@ void move_to_game_state(GameState new_game_state,
     GameState& current_game_state,
     bn::optional<bn::affine_bg_ptr>& affine_bg,
     bn::optional<bn::regular_bg_ptr>& regular_bg,
-    bn::fixed_point& player_position,
-    bn::fixed& player_yaw_rotation);
+    mks::Title& title,
+    mks::Ingame& ingame);
 
 int main()
 {
@@ -57,10 +50,8 @@ int main()
     bn::optional<bn::affine_bg_ptr> main_bg;
     bn::optional<bn::regular_bg_ptr> overlay_bg;
 
-    bn::fixed_point player_position(0, 0);
-    bn::fixed player_yaw_rotation = 0;
-
-    mks::Game game;
+    mks::Title title;
+    mks::Ingame ingame;
 
     GameState previous_game_state = GameState::NONE;
     GameState current_game_state = GameState::NONE;
@@ -70,8 +61,8 @@ int main()
         current_game_state, 
         main_bg, 
         overlay_bg,
-        player_position, 
-        player_yaw_rotation);
+        title,
+        ingame);
 
     while(true)
     {
@@ -79,34 +70,41 @@ int main()
         {
             case GameState::TITLE:
                 {
-                    if(bn::keypad::start_released())
+                    title.update();
+
+                    if(title.change_game_state() != GameState::NONE)
                     {
-                        move_to_game_state(GameState::INGAME, 
+                        move_to_game_state(title.change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_bg, 
                             overlay_bg,
-                            player_position, 
-                            player_yaw_rotation);
+                            title,
+                            ingame);
+                    }
+                    else
+                    {
                     }
                 }
                 break;
             case GameState::INGAME:
                 {
-                    game.handle_player_navigation(player_position, player_yaw_rotation);
+                    ingame.update();
 
-                    main_bg.get()->set_pivot_position(player_position);
-                    main_bg.get()->set_rotation_angle(player_yaw_rotation);
-
-                    if(game.quit())
+                    if(ingame.change_game_state() != GameState::NONE)
                     {
-                        move_to_game_state(GameState::TITLE, 
+                        move_to_game_state(ingame.change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_bg, 
                             overlay_bg,
-                            player_position, 
-                            player_yaw_rotation);
+                            title,
+                            ingame);
+                    }
+                    else
+                    {
+                        main_bg.get()->set_pivot_position(ingame.get_player_position());
+                        main_bg.get()->set_rotation_angle(ingame.get_player_yaw_rotation());
                     }
                 }
                 break;
@@ -127,8 +125,8 @@ void move_to_game_state(GameState new_game_state,
     GameState& current_game_state,
     bn::optional<bn::affine_bg_ptr>& affine_bg,
     bn::optional<bn::regular_bg_ptr>& regular_bg,
-    bn::fixed_point& player_position,
-    bn::fixed& player_yaw_rotation)
+    mks::Title& title,
+    mks::Ingame& ingame)
 {
     previous_game_state = current_game_state;
     switch(previous_game_state)
@@ -137,9 +135,11 @@ void move_to_game_state(GameState new_game_state,
             break;
     }
 
-    current_game_state = new_game_state;
+    current_game_state = new_game_state;    
     switch(current_game_state)
     {
+        case GameState::START:
+            break;
         case GameState::TITLE:
             {
                 affine_bg.reset();
@@ -148,7 +148,17 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
                 regular_bg.get()->set_priority(0); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
+
+                title.init();
             }
+            break;
+        case GameState::NEW_GAME:
+            break;
+        case GameState::CONTINUE_GAME:
+            break;
+        case GameState::SETTINGS:
+            break;
+        case GameState::CREDITS:
             break;
         case GameState::INGAME:
             {
@@ -160,9 +170,7 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.get()->set_wrapping_enabled(false);    
                 affine_bg.get()->set_position(bn::fixed(0), bn::fixed(40)); // screen center offset
 
-                player_position.set_x(0);
-                player_position.set_y(0);
-                player_yaw_rotation = 0;
+                ingame.init();
             }
             break;
         default:

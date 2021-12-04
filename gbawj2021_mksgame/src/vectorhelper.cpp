@@ -1,4 +1,4 @@
-#include "VectorHelper.h"
+#include "vectorhelper.h"
 
 namespace mks
 {
