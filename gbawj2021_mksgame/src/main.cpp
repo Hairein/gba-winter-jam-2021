@@ -6,8 +6,6 @@
 #include "bn_string.h"
 #include "bn_optional.h"
 #include "bn_keypad.h"
-#include "bn_regular_bg_map_ptr.h"
-#include "bn_regular_bg_map_cell.h"
 #include "bn_affine_bg_ptr.h"
 #include "bn_affine_bg_map_ptr.h"
 #include "bn_affine_bg_map_cell.h"
@@ -79,22 +77,29 @@ int main()
 
         // ---
 
+        auto offsetUnitVectorX = game.getRotatedUnitVectorX(angle.floor_integer());
+        auto offsetUnitVectorY = game.getRotatedUnitVectorY(angle.floor_integer());
+
         if(bn::keypad::a_held())
         {
-            offsetX += bn::fixed(1);
+            offsetX += offsetUnitVectorX.x();
+            offsetY += offsetUnitVectorX.y();
         }
         else if(bn::keypad::b_held())
         {
-            offsetX -= bn::fixed(1);
+            offsetX -= offsetUnitVectorX.x();
+            offsetY -= offsetUnitVectorX.y();
         }
 
         if(bn::keypad::down_held())
         {
-            offsetY += bn::fixed(1);
+            offsetX -= offsetUnitVectorY.x();
+            offsetY -= offsetUnitVectorY.y();
         }
         else if(bn::keypad::up_held())
         {
-            offsetY -= bn::fixed(1);
+            offsetX += offsetUnitVectorY.x();
+            offsetY += offsetUnitVectorY.y();
         }
 
         // ---

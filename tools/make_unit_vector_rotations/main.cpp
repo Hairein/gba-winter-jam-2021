@@ -9,10 +9,14 @@ int main()
 {
     for(int angle = 0; angle <= 359; angle++)
     {
-        double angleRadians = (angle * M_PI) / 360.0;
+        double angleRadians = (angle * M_PI) / 180.0;
 
-        double unitVectorX = 0.0;
-        double unitVectorY = -1.0;
+        // X
+        double unitVectorX = 1.0;
+        double unitVectorY = 0.0;
+        // Y
+        // double unitVectorX = 0.0;
+        // double unitVectorY = -1.0;
 
         double angleDoubleX = unitVectorX * cos(angleRadians) - unitVectorY * sin(angleRadians);
         double angleDoubleY = unitVectorX * sin(angleRadians) + unitVectorY * cos(angleRadians);

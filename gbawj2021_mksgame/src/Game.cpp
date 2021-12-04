@@ -13,7 +13,7 @@ namespace mks
     Game::Game()
     {
     }
-
+    
     Game::~Game()
     {
     }
@@ -22,11 +22,21 @@ namespace mks
     {
     }
 
-    void Game::update()
+    void Game::update(bn::optional<bn::affine_bg_ptr> main_bg)
     {
     }
 
-    void Game::render()
+    void Game::render(bn::sprite_text_generator text_generator, bn::optional<bn::affine_bg_ptr> main_bg)
     {
+    }
+
+    bn::fixed_point Game::getRotatedUnitVectorX(int angle)
+    {
+        return rotated_unit_vectors_x[angle];
+    }
+
+    bn::fixed_point Game::getRotatedUnitVectorY(int angle)
+    {
+        return rotated_unit_vectors_y[angle];
     }
 }
