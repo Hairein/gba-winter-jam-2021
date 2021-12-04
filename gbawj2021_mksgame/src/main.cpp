@@ -9,6 +9,8 @@
 #include "bn_affine_bg_ptr.h"
 #include "bn_affine_bg_map_ptr.h"
 #include "bn_affine_bg_map_cell.h"
+#include "bn_regular_bg_ptr.h"
+#include "bn_regular_bg_item.h"
 #include "bn_log.h"
 #include "bn_span.h"
 
@@ -16,8 +18,28 @@
 #include "common_variable_8x16_sprite_font.h"
 
 #include "bn_affine_bg_items_world.h"
+#include "bn_regular_bg_items_layout.h"
 
 #include "Game.h"
+
+enum GameState 
+{
+    NONE, 
+    START, 
+    TITLE,
+    SETTINGS,
+    CREDITS,
+    INGAME
+};
+
+int main();
+void move_to_game_state(GameState new_game_state, 
+    GameState& previous_game_state, 
+    GameState& current_game_state,
+    bn::optional<bn::affine_bg_ptr>& affine_bg,
+    bn::optional<bn::regular_bg_ptr>& regular_bg,
+    bn::fixed_point& player_position,
+    bn::fixed& player_yaw_rotation);
 
 int main()
 {
@@ -27,90 +49,123 @@ int main()
     bn::bg_palettes::set_transparent_color(bn::color(4, 4, 4));
 
     constexpr bn::string_view info_text_lines[] = {
-        "Test"
+        "*"
     };
 
-    common::info info("MKS Game", info_text_lines, text_generator);
+    common::info info("Operation Terse", info_text_lines, text_generator);
 
-    bn::optional<bn::affine_bg_ptr> main_bg = bn::affine_bg_items::world.create_bg(0,0);
-    main_bg.get()->set_priority(1);
-    main_bg.get()->set_wrapping_enabled(false);    
-    main_bg.get()->set_position(bn::fixed(), bn::fixed(40)); // screen center offset
+    bn::optional<bn::affine_bg_ptr> main_bg;
+    bn::optional<bn::regular_bg_ptr> overlay_bg;
 
-    // bn::affine_bg_map_ptr bg_map = main_bg.get()->map();
-    // auto cells = bg_map.cells_ref();
-    // auto cells_ptr = cells.get()->data();
-    // for(int index = 0; index < cells.get()->size();index++)
-    // {
-    //     //const bn::regular_bg_map_cell cell = cells.get()->at(index);
-    //     //auto tile_index = cell.tile_index();
-    //     //cell.set_tile_index(bn::regular_bg_map_cell(0));
-    //     //*(cells_ptr + index) = bn::regular_bg_map_cell(1);
-    // }
-
-    bn::fixed angle = 0;
-
-    bn::fixed offsetX = 100;
-    bn::fixed offsetY = 100;
+    bn::fixed_point player_position(0, 0);
+    bn::fixed player_yaw_rotation = 0;
 
     mks::Game game;
 
+    GameState previous_game_state = GameState::NONE;
+    GameState current_game_state = GameState::NONE;
+
+    move_to_game_state(GameState::TITLE, 
+        previous_game_state, 
+        current_game_state, 
+        main_bg, 
+        overlay_bg,
+        player_position, 
+        player_yaw_rotation);
+
     while(true)
     {
-        if(bn::keypad::left_held())
+        switch(current_game_state)
         {
-            angle -= bn::fixed(1);
-        }
-        else if(bn::keypad::right_held())
-        {
-            angle += bn::fixed(1);
-        }
+            case GameState::TITLE:
+                {
+                    if(bn::keypad::start_released())
+                    {
+                        move_to_game_state(GameState::INGAME, 
+                            previous_game_state, 
+                            current_game_state, 
+                            main_bg, 
+                            overlay_bg,
+                            player_position, 
+                            player_yaw_rotation);
+                    }
+                }
+                break;
+            case GameState::INGAME:
+                {
+                    game.handle_player_navigation(player_position, player_yaw_rotation);
 
-        while(angle >= bn::fixed(360))
-        {
-            angle -= bn::fixed(360);
-        }
-        while(angle < bn::fixed(0))
-        {
-            angle += bn::fixed(360);
-        }
+                    main_bg.get()->set_pivot_position(player_position);
+                    main_bg.get()->set_rotation_angle(player_yaw_rotation);
 
-        // ---
-
-        auto offsetUnitVectorX = game.getRotatedUnitVectorX(angle.floor_integer());
-        auto offsetUnitVectorY = game.getRotatedUnitVectorY(angle.floor_integer());
-
-        if(bn::keypad::a_held())
-        {
-            offsetX += offsetUnitVectorX.x();
-            offsetY += offsetUnitVectorX.y();
+                    if(game.quit())
+                    {
+                        move_to_game_state(GameState::TITLE, 
+                            previous_game_state, 
+                            current_game_state, 
+                            main_bg, 
+                            overlay_bg,
+                            player_position, 
+                            player_yaw_rotation);
+                    }
+                }
+                break;
+            default:
+                break;
         }
-        else if(bn::keypad::b_held())
-        {
-            offsetX -= offsetUnitVectorX.x();
-            offsetY -= offsetUnitVectorX.y();
-        }
-
-        if(bn::keypad::down_held())
-        {
-            offsetX -= offsetUnitVectorY.x();
-            offsetY -= offsetUnitVectorY.y();
-        }
-        else if(bn::keypad::up_held())
-        {
-            offsetX += offsetUnitVectorY.x();
-            offsetY += offsetUnitVectorY.y();
-        }
-
-        // ---
-
-        main_bg.get()->set_pivot_position(offsetX, offsetY);
-        main_bg.get()->set_rotation_angle(angle);
 
         // ---
 
         info.update();
 
         bn::core::update();
+    }
+}
+
+void move_to_game_state(GameState new_game_state, 
+    GameState& previous_game_state, 
+    GameState& current_game_state,
+    bn::optional<bn::affine_bg_ptr>& affine_bg,
+    bn::optional<bn::regular_bg_ptr>& regular_bg,
+    bn::fixed_point& player_position,
+    bn::fixed& player_yaw_rotation)
+{
+    previous_game_state = current_game_state;
+    switch(previous_game_state)
+    {
+        default:
+            break;
+    }
+
+    current_game_state = new_game_state;
+    switch(current_game_state)
+    {
+        case GameState::TITLE:
+            {
+                affine_bg.reset();
+                
+                regular_bg.reset();
+                regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
+                regular_bg.get()->set_priority(0); 
+                regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
+            }
+            break;
+        case GameState::INGAME:
+            {
+                regular_bg.reset();
+
+                affine_bg.reset();
+                affine_bg = bn::affine_bg_items::world.create_bg(0,0);
+                affine_bg.get()->set_priority(1);
+                affine_bg.get()->set_wrapping_enabled(false);    
+                affine_bg.get()->set_position(bn::fixed(0), bn::fixed(40)); // screen center offset
+
+                player_position.set_x(0);
+                player_position.set_y(0);
+                player_yaw_rotation = 0;
+            }
+            break;
+        default:
+            break;
     }
 }
