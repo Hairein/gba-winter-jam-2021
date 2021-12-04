@@ -20,15 +20,13 @@ namespace mks
 
     void Game::init()
     {
-        auto test_pattern_bg = bn::regular_bg_items::test_pattern.create_bg(bn::fixed_point(0,0));
-        test_pattern_bg.set_visible(true);
     }
 
     void Game::update()
     {
     }
 
-    void Game::render(bn::sprite_text_generator& text_generator)
+    void Game::render()
     {
     }
 }
