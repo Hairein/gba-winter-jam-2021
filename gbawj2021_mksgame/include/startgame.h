@@ -1,5 +1,5 @@
-#ifndef MKS_NEWGAME_H
-#define MKS_NEWGAME_H
+#ifndef MKS_STARTGAME_H
+#define MKS_STARTGAME_H
 
 #include "bn_core.h"
 
@@ -7,11 +7,11 @@
 
 namespace mks
 {
-    class NewGame
+    class StartGame
     {
     public: 
-        NewGame();
-        ~NewGame();
+        StartGame();
+        ~StartGame();
         
         void init();
         void update();

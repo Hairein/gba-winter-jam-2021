@@ -1,25 +1,25 @@
 #include "bn_keypad.h"
 
-#include "newgame.h"
+#include "startgame.h"
 
 namespace mks
 {
-    NewGame::NewGame()
+    StartGame::StartGame()
     {
 
     }
 
-    NewGame::~NewGame()
+    StartGame::~StartGame()
     {
 
     }
         
-    void NewGame::init()
+    void StartGame::init()
     {
         next_game_state = GameState::NONE;
     }
 
-    void NewGame::update()
+    void StartGame::update()
     {
         if(bn::keypad::start_released())
         {
@@ -28,7 +28,7 @@ namespace mks
         }
     }
 
-    GameState NewGame::change_game_state()
+    GameState StartGame::change_game_state()
     {
         return next_game_state;
     }

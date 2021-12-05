@@ -9,12 +9,11 @@
 enum GameState 
 {
     NONE, 
-    START, 
+    INIT, 
     TITLE,
     SETTINGS,
     CREDITS,
-    NEW_GAME,
-    CONTINUE_GAME,
+    START_GAME,
     INGAME
 };
 
