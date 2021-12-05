@@ -50,8 +50,8 @@ namespace mks
 
         // ---
 
-        auto offsetUnitVectorX = vectorHelper.getRotatedUnitVectorX(player_yaw_rotation.floor_integer());
-        auto offsetUnitVectorY = vectorHelper.getRotatedUnitVectorY(player_yaw_rotation.floor_integer());
+        auto offsetUnitVectorX = vectorHelper.get_rotated_unit_vector_x(player_yaw_rotation.floor_integer());
+        auto offsetUnitVectorY = vectorHelper.get_rotated_unit_vector_y(player_yaw_rotation.floor_integer());
 
         if(bn::keypad::a_held())
         {

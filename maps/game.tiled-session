@@ -54,6 +54,7 @@
         "world.tmx",
         "world1024.tmx"
     ],
+    "resizeMap.removeObjects": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 8,

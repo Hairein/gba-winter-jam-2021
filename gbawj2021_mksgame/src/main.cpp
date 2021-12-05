@@ -17,8 +17,8 @@
 #include "common_info.h"
 #include "common_variable_8x16_sprite_font.h"
 
-#include "bn_affine_bg_items_world.h"
-#include "bn_regular_bg_items_layout.h"
+#include "bn_affine_bg_items_default_map1.h"
+#include "bn_regular_bg_items_map_view.h"
 
 #include "globals.h"
 
@@ -180,7 +180,7 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.reset();
                 
                 regular_bg.reset();
-                regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
+                regular_bg = bn::regular_bg_items::map_view.create_bg(0,0);
                 regular_bg.get()->set_priority(1); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
@@ -192,7 +192,7 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.reset();
                 
                 regular_bg.reset();
-                regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
+                regular_bg = bn::regular_bg_items::map_view.create_bg(0,0);
                 regular_bg.get()->set_priority(1); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
@@ -204,7 +204,7 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.reset();
                 
                 regular_bg.reset();
-                regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
+                regular_bg = bn::regular_bg_items::map_view.create_bg(0,0);
                 regular_bg.get()->set_priority(1); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
@@ -216,7 +216,7 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.reset();
                 
                 regular_bg.reset();
-                regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
+                regular_bg = bn::regular_bg_items::map_view.create_bg(0,0);
                 regular_bg.get()->set_priority(1); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
@@ -228,7 +228,7 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.reset();
 
                 affine_bg.reset();
-                affine_bg = bn::affine_bg_items::world.create_bg(0,0);
+                affine_bg = bn::affine_bg_items::default_map1.create_bg(0,0);
                 affine_bg.get()->set_priority(1);
                 affine_bg.get()->set_wrapping_enabled(false);    
                 affine_bg.get()->set_position(bn::fixed(0), bn::fixed(40)); // screen center offset
