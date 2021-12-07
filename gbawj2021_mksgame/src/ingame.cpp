@@ -22,9 +22,13 @@ namespace mks
  
     }
 
+    void Ingame::shutdown()
+    {
+    }
+
     void Ingame::update()
     {
-        if(bn::keypad::start_released())
+        if(bn::keypad::b_released())
         {
             next_game_state = GameState::TITLE;
             return;

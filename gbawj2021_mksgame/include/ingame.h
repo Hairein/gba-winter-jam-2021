@@ -16,6 +16,7 @@ namespace mks
         ~Ingame();
 
         void init();
+        void shutdown();
         void update();
 
         GameState change_game_state();
