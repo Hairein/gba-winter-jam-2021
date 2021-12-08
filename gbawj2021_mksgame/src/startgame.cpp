@@ -30,7 +30,12 @@ namespace mks
 
     void StartGame::update()
     {
-        if(bn::keypad::b_released())
+        if(bn::keypad::a_released())
+        {
+            next_game_state = GameState::INGAME;
+            return; 
+        }
+        else if(bn::keypad::b_released())
         {
             next_game_state = GameState::TITLE;
             return; 

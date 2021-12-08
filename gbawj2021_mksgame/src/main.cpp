@@ -18,7 +18,7 @@
 #include "common_info.h"
 #include "common_variable_8x16_sprite_font.h"
 
-#include "bn_affine_bg_items_default_map1.h"
+#include "bn_affine_bg_items_map0.h"
 #include "bn_regular_bg_items_map_view.h"
 #include "bn_regular_bg_items_credits.h"
 #include "bn_regular_bg_items_title.h"
@@ -340,7 +340,7 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.reset();
 
                 affine_bg.reset();
-                affine_bg = bn::affine_bg_items::default_map1.create_bg(0,0);
+                affine_bg = bn::affine_bg_items::map0.create_bg(0,0);
                 affine_bg.get()->set_priority(3);
                 affine_bg.get()->set_wrapping_enabled(false);    
                 affine_bg.get()->set_position(bn::fixed(0), bn::fixed(40)); // screen center offset

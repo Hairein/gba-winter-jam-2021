@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "world_tiles.tsx",
+    "activeFile": "map0.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Alle Dateien (*)",
@@ -14,6 +14,14 @@
             "viewCenter": {
                 "x": 497.33333333333326,
                 "y": 478
+            }
+        },
+        "map0.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 611.1818181818182,
+                "y": 369.1818181818182
             }
         },
         "test_192x192_tiles.tmx": {
@@ -53,12 +61,13 @@
     "map.width": 192,
     "openFiles": [
         "world_tiles.tsx",
-        "default_map1.tmx"
+        "map0.tmx"
     ],
     "project": "game.tiled-project",
     "recentFiles": [
-        "default_map1.tmx",
         "world_tiles.tsx",
+        "map0.tmx",
+        "default_map1.tmx",
         "test_192x192_tiles.tmx",
         "world.tmx",
         "world1024.tmx"
