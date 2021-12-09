@@ -18,7 +18,7 @@ namespace mks
         
     void StartGame::init()
     {
-        next_game_state = GameState::NONE;
+        next_game_state = GameState::GAMESTATE_NONE;
 
         button_back_sprite = bn::sprite_items::button_back.create_sprite_optional(-100,68);  
     }
@@ -32,12 +32,12 @@ namespace mks
     {
         if(bn::keypad::a_released())
         {
-            next_game_state = GameState::INGAME;
+            next_game_state = GameState::GAMESTATE_INGAME;
             return; 
         }
         else if(bn::keypad::b_released())
         {
-            next_game_state = GameState::TITLE;
+            next_game_state = GameState::GAMESTATE_TITLE;
             return; 
         }
     }

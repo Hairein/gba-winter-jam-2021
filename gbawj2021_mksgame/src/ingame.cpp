@@ -12,25 +12,31 @@ namespace mks
     {
     }
 
-    void Ingame::init()
+    void Ingame::init(bn::fixed_point new_ingame_center_offset)
     {
-        next_game_state = GameState::NONE;
+        next_game_state = GameState::GAMESTATE_NONE;
+
+        ingame_center_offset = new_ingame_center_offset;
 
         player_position.set_x(0);
         player_position.set_y(0);
         player_yaw_rotation = 0;
  
+        player_heli_sprite = bn::sprite_items::player_heli_center.create_sprite_optional(0,40,2);
+        compass_sprite = bn::sprite_items::compass1.create_sprite_optional(0,-71);
     }
 
     void Ingame::shutdown()
     {
+        player_heli_sprite.reset();
+        compass_sprite.reset();
     }
 
     void Ingame::update()
     {
         if(bn::keypad::start_released())
         {
-            next_game_state = GameState::TITLE;
+            next_game_state = GameState::GAMESTATE_TITLE;
             return;
         }
 
@@ -78,6 +84,8 @@ namespace mks
             player_position.set_x(player_position.x() + (offsetUnitVectorY.x() * bn::fixed(PLAYER_FORWARD_SPEED)));
             player_position.set_y(player_position.y() + (offsetUnitVectorY.y() * bn::fixed(PLAYER_FORWARD_SPEED)));
         }
+
+        update_compass();
     }
 
     bn::fixed_point Ingame::get_player_position()
@@ -93,5 +101,10 @@ namespace mks
     GameState Ingame::change_game_state()
     {
         return next_game_state;
+    }
+
+    void Ingame::update_compass()
+    {
+        compass_sprite.get()->set_rotation_angle(player_yaw_rotation);
     }
 }

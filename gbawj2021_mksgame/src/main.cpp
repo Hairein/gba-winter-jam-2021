@@ -65,10 +65,10 @@ int main()
     mks::Settings settings;
     mks::Title title;
 
-    GameState previous_game_state = GameState::NONE;
-    GameState current_game_state = GameState::NONE;
+    GameState previous_game_state = GameState::GAMESTATE_NONE;
+    GameState current_game_state = GameState::GAMESTATE_NONE;
 
-    move_to_game_state(GameState::INIT, 
+    move_to_game_state(GameState::GAMESTATE_INIT, 
         previous_game_state, 
         current_game_state, 
         main_affine_bg, 
@@ -83,9 +83,9 @@ int main()
     {
         switch(current_game_state)
         {
-            case GameState::INIT: // One-time initialization
+            case GameState::GAMESTATE_INIT: // One-time initialization
                 {
-                    move_to_game_state(GameState::TITLE, 
+                    move_to_game_state(GameState::GAMESTATE_TITLE, 
                         previous_game_state, 
                         current_game_state, 
                         main_affine_bg, 
@@ -97,11 +97,11 @@ int main()
                         title);
                 }
                 break;
-            case GameState::CREDITS:
+            case GameState::GAMESTATE_CREDITS:
                 {
                     credits.update();
 
-                    if(credits.change_game_state() != GameState::NONE)
+                    if(credits.change_game_state() != GameState::GAMESTATE_NONE)
                     {
                         move_to_game_state(credits.change_game_state(), 
                             previous_game_state, 
@@ -119,11 +119,11 @@ int main()
                     }
                 }
                 break;
-            case GameState::INGAME:
+            case GameState::GAMESTATE_INGAME:
                 {
                     ingame.update();
 
-                    if(ingame.change_game_state() != GameState::NONE)
+                    if(ingame.change_game_state() != GameState::GAMESTATE_NONE)
                     {
                         move_to_game_state(ingame.change_game_state(), 
                             previous_game_state, 
@@ -143,11 +143,11 @@ int main()
                     }
                 }
                 break;
-            case GameState::START_GAME:
+            case GameState::GAMESTATE_START_GAME:
                 {
                     start_game.update();
 
-                    if(start_game.change_game_state() != GameState::NONE)
+                    if(start_game.change_game_state() != GameState::GAMESTATE_NONE)
                     {
                         move_to_game_state(start_game.change_game_state(), 
                             previous_game_state, 
@@ -165,11 +165,11 @@ int main()
                     }
                 }
                 break;
-            case GameState::SETTINGS:
+            case GameState::GAMESTATE_SETTINGS:
                 {
                     settings.update();
 
-                    if(settings.change_game_state() != GameState::NONE)
+                    if(settings.change_game_state() != GameState::GAMESTATE_NONE)
                     {
                         move_to_game_state(settings.change_game_state(), 
                             previous_game_state, 
@@ -187,11 +187,11 @@ int main()
                     }
                 }
                 break;
-            case GameState::TITLE:
+            case GameState::GAMESTATE_TITLE:
                 {
                     title.update();
 
-                    if(title.change_game_state() != GameState::NONE)
+                    if(title.change_game_state() != GameState::GAMESTATE_NONE)
                     {
                         move_to_game_state(title.change_game_state(), 
                             previous_game_state, 
@@ -235,7 +235,7 @@ void move_to_game_state(GameState new_game_state,
     previous_game_state = current_game_state;
     switch(previous_game_state)
     {
-        case GameState::TITLE:
+        case GameState::GAMESTATE_TITLE:
             {
                 affine_bg.reset();
                 
@@ -244,7 +244,7 @@ void move_to_game_state(GameState new_game_state,
                 title.shutdown();
             }
             break;
-        case GameState::START_GAME:
+        case GameState::GAMESTATE_START_GAME:
             {
                 affine_bg.reset();
                 
@@ -253,7 +253,7 @@ void move_to_game_state(GameState new_game_state,
                 start_game.shutdown();
             }
             break;
-        case GameState::SETTINGS:
+        case GameState::GAMESTATE_SETTINGS:
             {
                 affine_bg.reset();
                 
@@ -262,7 +262,7 @@ void move_to_game_state(GameState new_game_state,
                 settings.shutdown();
             }
             break;
-        case GameState::CREDITS:
+        case GameState::GAMESTATE_CREDITS:
             {
                 affine_bg.reset();
                 
@@ -271,7 +271,7 @@ void move_to_game_state(GameState new_game_state,
                 credits.shutdown();
             }
             break;
-        case GameState::INGAME:
+        case GameState::GAMESTATE_INGAME:
             {
                 regular_bg.reset();
 
@@ -287,7 +287,7 @@ void move_to_game_state(GameState new_game_state,
     current_game_state = new_game_state;    
     switch(current_game_state)
     {
-        case GameState::TITLE:
+        case GameState::GAMESTATE_TITLE:
             {
                 affine_bg.reset();
                 
@@ -299,7 +299,7 @@ void move_to_game_state(GameState new_game_state,
                 title.init();
             }
             break;
-        case GameState::START_GAME:
+        case GameState::GAMESTATE_START_GAME:
             {
                 affine_bg.reset();
                 
@@ -311,7 +311,7 @@ void move_to_game_state(GameState new_game_state,
                 start_game.init();
             }
             break;
-        case GameState::SETTINGS:
+        case GameState::GAMESTATE_SETTINGS:
             {
                 affine_bg.reset();
                 
@@ -323,7 +323,7 @@ void move_to_game_state(GameState new_game_state,
                 settings.init();
             }
             break;
-        case GameState::CREDITS:
+        case GameState::GAMESTATE_CREDITS:
             {
                 affine_bg.reset();
                 
@@ -335,17 +335,19 @@ void move_to_game_state(GameState new_game_state,
                 credits.init();
             }
             break;
-        case GameState::INGAME:
+        case GameState::GAMESTATE_INGAME:
             {
+                bn::fixed_point ingame_center_offset(0,40);
+
                 regular_bg.reset();
 
                 affine_bg.reset();
                 affine_bg = bn::affine_bg_items::map0.create_bg(0,0);
                 affine_bg.get()->set_priority(3);
                 affine_bg.get()->set_wrapping_enabled(false);    
-                affine_bg.get()->set_position(bn::fixed(0), bn::fixed(40)); // screen center offset
+                affine_bg.get()->set_position(ingame_center_offset);
 
-                ingame.init();
+                ingame.init(ingame_center_offset);
             }
             break;
         default:

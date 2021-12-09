@@ -20,7 +20,7 @@ namespace mks
         
     void Title::init()
     {
-        next_game_state = GameState::NONE;
+        next_game_state = GameState::GAMESTATE_NONE;
 
         text_main_menu_version = bn::sprite_items::text_version.create_sprite_optional(-100,-68);
 
@@ -68,9 +68,9 @@ namespace mks
         {
             switch(menu_index)
             {
-                case 0: next_game_state = GameState::START_GAME;break;
-                case 1: next_game_state = GameState::SETTINGS;break;
-                case 2: next_game_state = GameState::CREDITS;break;
+                case 0: next_game_state = GameState::GAMESTATE_START_GAME;break;
+                case 1: next_game_state = GameState::GAMESTATE_SETTINGS;break;
+                case 2: next_game_state = GameState::GAMESTATE_CREDITS;break;
                 default: break;
             }
             return; 
