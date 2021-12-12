@@ -11,6 +11,8 @@
 #include "bn_sprite_items_player_heli_center.h"
 #include "bn_sprite_items_player_heli_backward.h"
 #include "bn_sprite_items_compass1.h"
+#include "bn_sprite_items_turret_base_rotations.h"
+#include "bn_sprite_items_turret_gun_rotations.h"
 
 #include "globals.h"
 #include "vectorhelper.h"
