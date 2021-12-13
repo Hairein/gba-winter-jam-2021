@@ -15,7 +15,10 @@
 #include "bn_sprite_items_turret_gun_rotations.h"
 
 #include "globals.h"
-#include "vectorhelper.h"
+#include "vector_helper.h"
+#include "explosion_handler.h"
+#include "compass.h"
+#include "player_helicopter.h"
 
 namespace mks
 {
@@ -37,28 +40,24 @@ namespace mks
     protected:
         VectorHelper vectorHelper;
 
+        ExplosionHandler explosion_handler;
+
+        Compass compass;
+        PlayerHelicopter player_helicopter;
+
         GameState next_game_state;
 
         bn::fixed_point ingame_center_offset;
 
-        bn::fixed_point player_position;
-        bn::fixed player_yaw_rotation;
+        bn::fixed_point map_center;
+        bn::fixed map_yaw;
 
-        PitchState player_pitch_state;
-        int pitch_state_counter = 0;
-        int pitch_state_zero = 0;
-        int pitch_state_min = -15;
-        int pitch_state_max = 15;
-        RollState player_roll_state;
-        int roll_state_counter = 0;
-        int roll_state_zero = 0;
-        int roll_state_min = -15;
-        int roll_state_max = 15;
-
-        bn::optional<bn::sprite_ptr> player_heli_sprite;
-        bn::optional<bn::sprite_ptr> compass_sprite;
-
-        void update_compass();
+        void init_map();
+        void init_ui();
+        void update_map();
+        void update_ui();
+        void shutdown_map();
+        void shutdown_ui();
     };
 }
 

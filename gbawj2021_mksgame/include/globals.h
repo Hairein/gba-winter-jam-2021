@@ -8,6 +8,9 @@
 #define PLAYER_BACK_SPEED 0.75
 #define PLAYER_PAN_SPEED 0.75
 
+#define DEFAULT_SPRITE_VECTOR_SIZE 8
+#define SHORT_FRAME_HOLD 2
+
 enum GameState 
 {
     GAMESTATE_NONE, 

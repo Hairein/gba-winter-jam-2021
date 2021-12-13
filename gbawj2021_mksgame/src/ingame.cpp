@@ -1,4 +1,5 @@
 #include "bn_keypad.h"
+#include "bn_log.h"
 
 #include "ingame.h"
 
@@ -18,18 +19,18 @@ namespace mks
 
         ingame_center_offset = new_ingame_center_offset;
 
-        player_position.set_x(0);
-        player_position.set_y(0);
-        player_yaw_rotation = 0;
- 
-        player_heli_sprite = bn::sprite_items::player_heli_center.create_sprite_optional(0,40,2);
-        compass_sprite = bn::sprite_items::compass1.create_sprite_optional(0,-71);
+        map_center.set_x(0);
+        map_center.set_y(0);
+        map_yaw = 0;
+
+        init_map();
+        init_ui();
     }
 
     void Ingame::shutdown()
     {
-        player_heli_sprite.reset();
-        compass_sprite.reset();
+        shutdown_map();
+        shutdown_ui();
     }
 
     void Ingame::update()
@@ -42,60 +43,67 @@ namespace mks
 
         if(bn::keypad::left_held())
         {
-            player_yaw_rotation -= bn::fixed(PLAYER_TURN_SPEED);
+            map_yaw -= bn::fixed(PLAYER_TURN_SPEED);
         }
         else if(bn::keypad::right_held())
         {
-            player_yaw_rotation += bn::fixed(PLAYER_TURN_SPEED);
+            map_yaw += bn::fixed(PLAYER_TURN_SPEED);
         }
 
-        while(player_yaw_rotation >= bn::fixed(360))
+        // TEST EXPLOSION HANDLING
+        if(bn::keypad::select_released())
         {
-            player_yaw_rotation -= bn::fixed(360);
+            explosion_handler.spawn_explosion(map_center, 0);
         }
-        while(player_yaw_rotation < bn::fixed(0))
+
+        while(map_yaw >= bn::fixed(360))
         {
-            player_yaw_rotation += bn::fixed(360);
+            map_yaw -= bn::fixed(360);
+        }
+        while(map_yaw < bn::fixed(0))
+        {
+            map_yaw += bn::fixed(360);
         }
 
         // ---
 
-        auto offsetUnitVectorX = vectorHelper.get_rotated_unit_vector_x(player_yaw_rotation.floor_integer());
-        auto offsetUnitVectorY = vectorHelper.get_rotated_unit_vector_y(player_yaw_rotation.floor_integer());
+        auto offsetUnitVectorX = vectorHelper.get_rotated_unit_vector_x(map_yaw.floor_integer());
+        auto offsetUnitVectorY = vectorHelper.get_rotated_unit_vector_y(map_yaw.floor_integer());
 
         if(bn::keypad::a_held())
         {
-            player_position.set_x(player_position.x() + (offsetUnitVectorX.x() * bn::fixed(PLAYER_PAN_SPEED)));
-            player_position.set_y(player_position.y() + (offsetUnitVectorX.y() * bn::fixed(PLAYER_PAN_SPEED)));
+            map_center.set_x(map_center.x() + (offsetUnitVectorX.x() * bn::fixed(PLAYER_PAN_SPEED)));
+            map_center.set_y(map_center.y() + (offsetUnitVectorX.y() * bn::fixed(PLAYER_PAN_SPEED)));
         }
         else if(bn::keypad::b_held())
         {
-            player_position.set_x(player_position.x() - (offsetUnitVectorX.x() * bn::fixed(PLAYER_PAN_SPEED)));
-            player_position.set_y(player_position.y() - (offsetUnitVectorX.y() * bn::fixed(PLAYER_PAN_SPEED)));
+            map_center.set_x(map_center.x() - (offsetUnitVectorX.x() * bn::fixed(PLAYER_PAN_SPEED)));
+            map_center.set_y(map_center.y() - (offsetUnitVectorX.y() * bn::fixed(PLAYER_PAN_SPEED)));
         }
 
         if(bn::keypad::down_held())
         {
-            player_position.set_x(player_position.x() - (offsetUnitVectorY.x() * bn::fixed(PLAYER_BACK_SPEED)));
-            player_position.set_y(player_position.y() - (offsetUnitVectorY.y() * bn::fixed(PLAYER_BACK_SPEED)));
+            map_center.set_x(map_center.x() - (offsetUnitVectorY.x() * bn::fixed(PLAYER_BACK_SPEED)));
+            map_center.set_y(map_center.y() - (offsetUnitVectorY.y() * bn::fixed(PLAYER_BACK_SPEED)));
         }
         else if(bn::keypad::up_held())
         {
-            player_position.set_x(player_position.x() + (offsetUnitVectorY.x() * bn::fixed(PLAYER_FORWARD_SPEED)));
-            player_position.set_y(player_position.y() + (offsetUnitVectorY.y() * bn::fixed(PLAYER_FORWARD_SPEED)));
+            map_center.set_x(map_center.x() + (offsetUnitVectorY.x() * bn::fixed(PLAYER_FORWARD_SPEED)));
+            map_center.set_y(map_center.y() + (offsetUnitVectorY.y() * bn::fixed(PLAYER_FORWARD_SPEED)));
         }
 
-        update_compass();
+        update_map();
+        update_ui();
     }
 
     bn::fixed_point Ingame::get_player_position()
     {
-        return player_position;
+        return map_center;
     }
 
     bn::fixed Ingame::get_player_yaw_rotation()
     {
-        return player_yaw_rotation;
+        return map_yaw;
     }
 
     GameState Ingame::change_game_state()
@@ -103,8 +111,41 @@ namespace mks
         return next_game_state;
     }
 
-    void Ingame::update_compass()
+    void Ingame::init_map()
     {
-        compass_sprite.get()->set_rotation_angle(player_yaw_rotation);
+        explosion_handler.init();
+    }
+
+    void Ingame::update_map()
+    {
+        explosion_handler.update(map_center, map_yaw);
+    }
+    
+    void Ingame::shutdown_map()
+    {
+        explosion_handler.shutdown();
+    }
+
+    void Ingame::init_ui()
+    {
+        player_helicopter.init();
+        player_helicopter.set_sprite(bn::sprite_items::player_heli_center.create_sprite_optional(0,40,2));
+
+        compass.init();
+        compass.set_sprite(bn::sprite_items::compass1.create_sprite_optional(0,-71));
+    }
+
+    void Ingame::update_ui()
+    {
+        player_helicopter.update();
+
+        compass.set_angle(map_yaw);
+        compass.update();
+    }
+
+    void Ingame::shutdown_ui()
+    {
+        player_helicopter.shutdown();
+        compass.shutdown();
     }
 }
