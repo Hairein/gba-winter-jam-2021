@@ -28,9 +28,6 @@ namespace mks
     protected:
         int sprite_index;
         int frame_hold_counter;
-
-        bn::fixed_point position;
-        bn::fixed angle;
     };
 }
 

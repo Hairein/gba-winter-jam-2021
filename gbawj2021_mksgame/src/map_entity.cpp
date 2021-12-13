@@ -44,21 +44,21 @@ namespace mks
 
     void MapEntity::set_map_position(bn::fixed_point new_map_position)
     {
-        sprite.get()->set_position(new_map_position);
+        position = new_map_position;
     }
 
     bn::fixed_point MapEntity::get_map_position()
     {
-        return sprite.get()->position();
+        return position;
     }
 
     void MapEntity::set_map_angle(bn::fixed new_angle)
     {
-        sprite.get()->set_rotation_angle(new_angle);
+        angle = new_angle;
     }
 
     bn::fixed MapEntity::get_map_angle()
     {
-        return sprite.get()->rotation_angle();
+        return angle;
     }
 }

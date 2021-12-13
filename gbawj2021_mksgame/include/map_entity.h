@@ -34,6 +34,9 @@ namespace mks
 
     protected:
         bool active;
+
+        bn::fixed_point position;
+        bn::fixed angle;
         
         bn::optional<bn::sprite_ptr> sprite;
     };
