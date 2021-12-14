@@ -28,7 +28,7 @@ namespace mks
         Ingame();
         ~Ingame();
 
-        void init(bn::fixed_point new_ingame_center_offset);
+        void init(bn::fixed_point& new_ingame_center_offset);
         void shutdown();
         void update();
 
@@ -38,7 +38,7 @@ namespace mks
         bn::fixed get_player_yaw_rotation();
 
     protected:
-        VectorHelper vectorHelper;
+        VectorHelper vector_helper;
 
         ExplosionHandler explosion_handler;
 

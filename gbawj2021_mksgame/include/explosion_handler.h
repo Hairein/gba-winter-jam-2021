@@ -10,6 +10,7 @@
 
 #include "globals.h"
 #include "explosion.h"
+#include "vector_helper.h"
 
 namespace mks
 {
@@ -21,7 +22,7 @@ namespace mks
         
         void init();
         void shutdown();
-        void update(bn::fixed_point map_center, bn::fixed map_yaw);
+        void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
        
         bool spawn_explosion(bn::fixed_point map_position, bn::fixed map_angle);
 

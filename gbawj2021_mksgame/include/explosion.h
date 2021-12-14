@@ -12,6 +12,7 @@
 
 #include "globals.h"
 #include "map_entity.h"
+#include "vector_helper.h"
 
 namespace mks
 {
@@ -21,9 +22,9 @@ namespace mks
         Explosion();
         ~Explosion();
         
-        void init(bn::fixed_point new_position, bn::fixed new_angle);
+        void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
-        void update(bn::fixed_point map_center, bn::fixed map_yaw);
+        void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
 
     protected:
         int sprite_index;

@@ -15,6 +15,8 @@ namespace mks
         bn::fixed_point get_rotated_unit_vector_x(int angle);
         bn::fixed_point get_rotated_unit_vector_y(int angle);
     
+        bn::fixed_point rotate_vector(bn::fixed_point& input, bn::fixed& angle);
+
     protected:
         bn::fixed_point rotated_unit_vectors_x[360] =
         {

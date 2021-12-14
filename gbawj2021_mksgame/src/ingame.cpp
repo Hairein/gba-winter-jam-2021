@@ -13,7 +13,7 @@ namespace mks
     {
     }
 
-    void Ingame::init(bn::fixed_point new_ingame_center_offset)
+    void Ingame::init(bn::fixed_point& new_ingame_center_offset)
     {
         next_game_state = GameState::GAMESTATE_NONE;
 
@@ -56,19 +56,13 @@ namespace mks
             explosion_handler.spawn_explosion(map_center, 0);
         }
 
-        while(map_yaw >= bn::fixed(360))
-        {
-            map_yaw -= bn::fixed(360);
-        }
-        while(map_yaw < bn::fixed(0))
-        {
-            map_yaw += bn::fixed(360);
-        }
-
+        while(map_yaw < bn::fixed(0)) map_yaw += bn::fixed(360);
+        while(map_yaw >= bn::fixed(360)) map_yaw -= bn::fixed(360);
+ 
         // ---
-
-        auto offsetUnitVectorX = vectorHelper.get_rotated_unit_vector_x(map_yaw.floor_integer());
-        auto offsetUnitVectorY = vectorHelper.get_rotated_unit_vector_y(map_yaw.floor_integer());
+        auto floored_yaw = map_yaw.floor_integer();
+        auto offsetUnitVectorX = vector_helper.get_rotated_unit_vector_x(floored_yaw);
+        auto offsetUnitVectorY = vector_helper.get_rotated_unit_vector_y(floored_yaw);
 
         if(bn::keypad::a_held())
         {
@@ -118,7 +112,10 @@ namespace mks
 
     void Ingame::update_map()
     {
-        explosion_handler.update(map_center, map_yaw);
+        auto rotated_ingame_center_offset = vector_helper.rotate_vector(ingame_center_offset, map_yaw);
+        auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
+
+        explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
     void Ingame::shutdown_map()

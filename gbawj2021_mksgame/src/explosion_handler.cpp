@@ -24,13 +24,13 @@ namespace mks
         explosions.clear();
     }
 
-    void ExplosionHandler::update(bn::fixed_point map_center, bn::fixed map_yaw)
+    void ExplosionHandler::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
             if(explosions[index].is_active())
             {
-                explosions[index].update(map_center, map_yaw);
+                explosions[index].update(vector_helper, map_center, map_yaw);
             }
         }
     }
