@@ -61,4 +61,14 @@ namespace mks
     {
         return sprite.get()->rotation_angle();
     }
+
+    void UiElement::set_z_order(int order)
+    {
+        sprite.get()->set_z_order(order);
+    }
+
+    int UiElement::get_z_order()
+    {
+        return sprite.get()->z_order();
+    }
 }

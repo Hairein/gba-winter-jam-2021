@@ -32,6 +32,9 @@ namespace mks
         void set_angle(bn::fixed new_angle);
         bn::fixed get_angle();
 
+        void set_z_order(int order);
+        int get_z_order();
+        
     protected:
         bool active;
         

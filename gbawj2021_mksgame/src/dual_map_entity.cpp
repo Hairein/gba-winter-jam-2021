@@ -24,7 +24,7 @@ namespace mks
         sprite[1].reset();
     }
 
-    void DualMapEntity::update(bn::fixed_point map_center, bn::fixed map_yaw_angle)
+    void DualMapEntity::update()
     {
     }
 
@@ -62,5 +62,15 @@ namespace mks
     bn::fixed DualMapEntity::get_map_angle(int index)
     {
         return angle[index];
+    }
+
+    void DualMapEntity::set_z_order(int index, int order)
+    {
+        sprite[index].get()->set_z_order(order);
+    }
+
+    int DualMapEntity::get_z_order(int index)
+    {
+        return sprite[index].get()->z_order();
     }
 }

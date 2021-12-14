@@ -22,7 +22,7 @@ namespace mks
         sprite.reset();
     }
 
-    void MapEntity::update(bn::fixed_point map_center, bn::fixed map_yaw_angle)
+    void MapEntity::update()
     {
     }
 
@@ -60,5 +60,15 @@ namespace mks
     bn::fixed MapEntity::get_map_angle()
     {
         return angle;
+    }
+
+    void MapEntity::set_z_order(int order)
+    {
+        sprite.get()->set_z_order(order);
+    }
+
+    int MapEntity::get_z_order()
+    {
+        return sprite.get()->z_order();
     }
 }

@@ -17,6 +17,7 @@
 #include "globals.h"
 #include "vector_helper.h"
 #include "explosion_handler.h"
+#include "enemy_turret_handler.h"
 #include "compass.h"
 #include "player_helicopter.h"
 
@@ -40,6 +41,7 @@ namespace mks
     protected:
         VectorHelper vector_helper;
 
+        EnemyTurretHandler enemy_turret_handler;
         ExplosionHandler explosion_handler;
 
         Compass compass;
@@ -52,11 +54,16 @@ namespace mks
         bn::fixed_point map_center;
         bn::fixed map_yaw;
 
+        void init_navigation();
+        void update_navigation();
+        void shutdown_navigation();
+
         void init_map();
-        void init_ui();
         void update_map();
-        void update_ui();
         void shutdown_map();
+        
+        void init_ui();
+        void update_ui();
         void shutdown_ui();
     };
 }

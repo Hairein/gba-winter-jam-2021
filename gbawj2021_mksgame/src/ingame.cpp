@@ -19,18 +19,18 @@ namespace mks
 
         ingame_center_offset = new_ingame_center_offset;
 
-        map_center.set_x(0);
-        map_center.set_y(0);
-        map_yaw = 0;
+        init_navigation();
 
-        init_map();
         init_ui();
+        init_map();
     }
 
     void Ingame::shutdown()
     {
-        shutdown_map();
+        shutdown_navigation();
+        
         shutdown_ui();
+        shutdown_map();
     }
 
     void Ingame::update()
@@ -41,6 +41,36 @@ namespace mks
             return;
         }
 
+        update_navigation();
+
+        update_ui();
+        update_map();
+    }
+
+    bn::fixed_point Ingame::get_player_position()
+    {
+        return map_center;
+    }
+
+    bn::fixed Ingame::get_player_yaw_rotation()
+    {
+        return map_yaw;
+    }
+
+    GameState Ingame::change_game_state()
+    {
+        return next_game_state;
+    }
+
+    void Ingame::init_navigation()
+    {
+        map_center.set_x(0);
+        map_center.set_y(0);
+        map_yaw = 0;
+    }
+
+    void Ingame::update_navigation()
+    {
         if(bn::keypad::left_held())
         {
             map_yaw -= bn::fixed(PLAYER_TURN_SPEED);
@@ -48,12 +78,6 @@ namespace mks
         else if(bn::keypad::right_held())
         {
             map_yaw += bn::fixed(PLAYER_TURN_SPEED);
-        }
-
-        // TEST EXPLOSION HANDLING
-        if(bn::keypad::select_released())
-        {
-            explosion_handler.spawn_explosion(map_center, 0);
         }
 
         while(map_yaw < bn::fixed(0)) map_yaw += bn::fixed(360);
@@ -85,28 +109,22 @@ namespace mks
             map_center.set_x(map_center.x() + (offsetUnitVectorY.x() * bn::fixed(PLAYER_FORWARD_SPEED)));
             map_center.set_y(map_center.y() + (offsetUnitVectorY.y() * bn::fixed(PLAYER_FORWARD_SPEED)));
         }
-
-        update_map();
-        update_ui();
     }
 
-    bn::fixed_point Ingame::get_player_position()
+    void Ingame::shutdown_navigation()
     {
-        return map_center;
-    }
-
-    bn::fixed Ingame::get_player_yaw_rotation()
-    {
-        return map_yaw;
-    }
-
-    GameState Ingame::change_game_state()
-    {
-        return next_game_state;
     }
 
     void Ingame::init_map()
     {
+        enemy_turret_handler.init();
+
+        // TEST
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, -40), 0, 0);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -40), 0, 90);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, 40), 0, 170);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, 40), 0, 300);
+
         explosion_handler.init();
     }
 
@@ -115,11 +133,13 @@ namespace mks
         auto rotated_ingame_center_offset = vector_helper.rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
+        enemy_turret_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
     void Ingame::shutdown_map()
     {
+        enemy_turret_handler.shutdown();
         explosion_handler.shutdown();
     }
 
@@ -127,9 +147,11 @@ namespace mks
     {
         player_helicopter.init();
         player_helicopter.set_sprite(bn::sprite_items::player_heli_center.create_sprite_optional(0,40,2));
-
+        player_helicopter.set_z_order(2);
+        
         compass.init();
         compass.set_sprite(bn::sprite_items::compass1.create_sprite_optional(0,-71));
+        compass.set_z_order(0);
     }
 
     void Ingame::update_ui()

@@ -13,7 +13,7 @@ namespace mks
         
     void PlayerHelicopter::init()
     {   
-        UiElement::init();     
+        UiElement::init();    
     }
 
     void PlayerHelicopter::shutdown()

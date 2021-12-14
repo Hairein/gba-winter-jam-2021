@@ -46,4 +46,22 @@ namespace mks
         while(sprite_angle < bn::fixed(0)) sprite_angle += bn::fixed(360);
         while(sprite_angle >= bn::fixed(360)) sprite_angle -= bn::fixed(360);
     }
+
+    int VectorHelper::calculate_sprite_index_from_facing(int facing_angle)
+    {
+        // if(facing_angle <= 15 || facing_angle > 345)
+        // {
+        //     return 0;
+        // }
+        
+        // auto new_facing_angle = facing_angle + 15;
+        // while(new_facing_angle < 0) new_facing_angle += 360;
+        // while(new_facing_angle >= 360) new_facing_angle -= 360;
+        // return new_facing_angle / 30;
+        
+        auto new_facing_angle = facing_angle + 15;
+        while(new_facing_angle < 0) new_facing_angle += 360;
+        while(new_facing_angle >= 360) new_facing_angle -= 360;
+        return new_facing_angle / 30;
+    }
 }

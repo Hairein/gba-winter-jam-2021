@@ -19,7 +19,7 @@ namespace mks
         
         void init();
         void shutdown();
-        void update(bn::fixed_point map_center, bn::fixed map_yaw_angle);
+        void update();
 
         bool is_active();
 
@@ -31,6 +31,9 @@ namespace mks
 
         void set_map_angle(bn::fixed new_map_angle);
         bn::fixed get_map_angle();
+
+        void set_z_order(int order);
+        int get_z_order();
 
     protected:
         bool active;
