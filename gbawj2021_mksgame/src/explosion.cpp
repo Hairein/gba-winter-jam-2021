@@ -41,16 +41,9 @@ namespace mks
             return;
         }
 
-        auto unrotated_sprite_position = position - map_center;       
-        auto raw_rotation =  -map_yaw;
-        while(raw_rotation < bn::fixed(0)) raw_rotation += bn::fixed(360);
-        while(raw_rotation >= bn::fixed(360)) raw_rotation -= bn::fixed(360);
-
-        auto new_sprite_position = vector_helper.rotate_vector(unrotated_sprite_position, raw_rotation);
-        
-        auto new_sprite_rotation = map_yaw - angle;
-        while(new_sprite_rotation < bn::fixed(0)) new_sprite_rotation += bn::fixed(360);
-        while(new_sprite_rotation >= bn::fixed(360)) new_sprite_rotation -= bn::fixed(360);
+        bn::fixed_point new_sprite_position;
+        bn::fixed new_sprite_rotation;
+        vector_helper.calculate_sprite_position_angle(map_center, map_yaw, position, angle, new_sprite_position, new_sprite_rotation);
 
         if(frame_hold_counter >= SHORT_FRAME_HOLD)
         {

@@ -17,6 +17,10 @@ namespace mks
     
         bn::fixed_point rotate_vector(bn::fixed_point& input, bn::fixed& angle);
 
+        void calculate_sprite_position_angle(bn::fixed_point& map_center, bn::fixed& map_yaw, 
+            bn::fixed_point& map_entity_position, bn::fixed& map_entity_angle, 
+            bn::fixed_point& sprite_position, bn::fixed& sprite_angle);
+
     protected:
         bn::fixed_point rotated_unit_vectors_x[360] =
         {

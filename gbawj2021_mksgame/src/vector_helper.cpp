@@ -29,4 +29,21 @@ namespace mks
         result.set_y(input.x() * degrees_lut_sin(angle) + input.y() * degrees_lut_cos(angle));
         return result;
     }
+
+    void VectorHelper::calculate_sprite_position_angle(bn::fixed_point& map_center, bn::fixed& map_yaw, 
+        bn::fixed_point& map_entity_position, bn::fixed& map_entity_angle, 
+        bn::fixed_point& sprite_position, bn::fixed& sprite_angle)
+    {
+        auto unrotated_sprite_position = map_entity_position - map_center;       
+        
+        auto raw_rotation =  -map_yaw;
+        while(raw_rotation < bn::fixed(0)) raw_rotation += bn::fixed(360);
+        while(raw_rotation >= bn::fixed(360)) raw_rotation -= bn::fixed(360);
+
+        sprite_position = rotate_vector(unrotated_sprite_position, raw_rotation);
+        
+        sprite_angle = map_yaw - map_entity_angle;
+        while(sprite_angle < bn::fixed(0)) sprite_angle += bn::fixed(360);
+        while(sprite_angle >= bn::fixed(360)) sprite_angle -= bn::fixed(360);
+    }
 }
