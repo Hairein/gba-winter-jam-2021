@@ -169,7 +169,7 @@ namespace mks
 
     void Ingame::update_ui()
     {
-        player_helicopter.update(input_key_flags);
+        player_helicopter.update(input_key_flags, ingame_center_offset);
         compass.update(map_yaw);
     }
 

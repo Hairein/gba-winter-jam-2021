@@ -7,9 +7,7 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 
-#include "bn_sprite_items_player_heli_forward.h"
-#include "bn_sprite_items_player_heli_center.h"
-#include "bn_sprite_items_player_heli_backward.h"
+#include "bn_sprite_items_player_heli.h"
 
 #include "globals.h"
 #include "ui_element.h"
@@ -24,19 +22,21 @@ namespace mks
         
         void init();
         void shutdown();
-        void update(uint16_t input_flags);
+        void update(uint16_t& input_flags, bn::fixed_point& ingame_center_offset);
 
     protected:
-        PitchState player_pitch_state;
+        PitchState player_pitch_state = PITCHSTATE_CENTER;
         int pitch_state_counter = 0;
         int pitch_state_zero = 0;
         int pitch_state_min = -15;
         int pitch_state_max = 15;
-        RollState player_roll_state;
+        RollState player_roll_state = ROLLSTATE_CENTER;
         int roll_state_counter = 0;
         int roll_state_zero = 0;
         int roll_state_min = -15;
         int roll_state_max = 15;
+
+        void evaluate_input(uint16_t& input_flags);
     };
 }
 
