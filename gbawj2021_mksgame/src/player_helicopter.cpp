@@ -28,8 +28,10 @@ namespace mks
         evaluate_input(input_flags);
 
         int pitch_offset = 0;
-        if(player_pitch_state == PITCHSTATE_CENTER) pitch_offset = 5;
-        else if(player_pitch_state == PITCHSTATE_BACKWARD) pitch_offset = 10;
+        if(player_pitch_state == PITCHSTATE_FORWARD_HALF) pitch_offset = 5;
+        else if(player_pitch_state == PITCHSTATE_CENTER) pitch_offset = 5;
+        else if(player_pitch_state == PITCHSTATE_BACKWARD_HALF) pitch_offset = 5;
+        else if(player_pitch_state == PITCHSTATE_BACKWARD_FULL) pitch_offset = 10;
         
         int roll_offset = 0;
         if(player_roll_state == ROLLSTATE_LEFT_HALF) roll_offset = 1;
@@ -104,13 +106,21 @@ namespace mks
             if(pitch_state_counter > 0) pitch_state_counter--;
         }
 
-        if(pitch_state_counter < -7)
+        if(pitch_state_counter < -10)
         {
-            player_pitch_state = PITCHSTATE_BACKWARD;
+            player_pitch_state = PITCHSTATE_BACKWARD_FULL;
         }
-        else if(pitch_state_counter > 7)
+        else if(pitch_state_counter >= -10 && pitch_state_counter < -5)
         {
-            player_pitch_state = PITCHSTATE_FORWARD;
+            player_pitch_state = PITCHSTATE_BACKWARD_HALF;
+        }
+        else if(pitch_state_counter >= 5 && pitch_state_counter < 10)
+        {
+            player_pitch_state = PITCHSTATE_FORWARD_HALF;
+        }
+        else if(pitch_state_counter > 10)
+        {
+            player_pitch_state = PITCHSTATE_FORWARD_FULL;
         }
         else
         {
