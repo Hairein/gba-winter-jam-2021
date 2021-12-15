@@ -35,7 +35,9 @@ namespace mks
 
     void Ingame::update()
     {
-        if(bn::keypad::start_released())
+        update_input();
+
+        if(input_key_flags & INPUT_START)
         {
             next_game_state = GameState::GAMESTATE_TITLE;
             return;
@@ -47,12 +49,12 @@ namespace mks
         update_map();
     }
 
-    bn::fixed_point Ingame::get_player_position()
+    bn::fixed_point Ingame::get_map_position()
     {
         return map_center;
     }
 
-    bn::fixed Ingame::get_player_yaw_rotation()
+    bn::fixed Ingame::get_map_yaw()
     {
         return map_yaw;
     }
@@ -60,6 +62,22 @@ namespace mks
     GameState Ingame::change_game_state()
     {
         return next_game_state;
+    }
+
+    void Ingame::update_input()
+    {
+        input_key_flags = 0x0000;
+
+        if(bn::keypad::a_held()) input_key_flags |= INPUT_A;   
+        if(bn::keypad::b_held()) input_key_flags |= INPUT_B;   
+        if(bn::keypad::select_held()) input_key_flags |= INPUT_SELECT;   
+        if(bn::keypad::start_held()) input_key_flags |= INPUT_START;   
+        if(bn::keypad::right_held()) input_key_flags |= INPUT_RIGHT;   
+        if(bn::keypad::left_held()) input_key_flags |= INPUT_LEFT;   
+        if(bn::keypad::up_held()) input_key_flags |= INPUT_UP;   
+        if(bn::keypad::down_held()) input_key_flags |= INPUT_DOWN;   
+        if(bn::keypad::r_held()) input_key_flags |= INPUT_R;   
+        if(bn::keypad::l_held()) input_key_flags |= INPUT_L;   
     }
 
     void Ingame::init_navigation()
@@ -71,11 +89,11 @@ namespace mks
 
     void Ingame::update_navigation()
     {
-        if(bn::keypad::left_held())
+        if(input_key_flags & INPUT_LEFT)
         {
             map_yaw -= bn::fixed(PLAYER_TURN_SPEED);
         }
-        else if(bn::keypad::right_held())
+        else if(input_key_flags & INPUT_RIGHT)
         {
             map_yaw += bn::fixed(PLAYER_TURN_SPEED);
         }
@@ -88,23 +106,23 @@ namespace mks
         auto offsetUnitVectorX = vector_helper.get_rotated_unit_vector_x(floored_yaw);
         auto offsetUnitVectorY = vector_helper.get_rotated_unit_vector_y(floored_yaw);
 
-        if(bn::keypad::a_held())
+        if(input_key_flags & INPUT_A)
         {
             map_center.set_x(map_center.x() + (offsetUnitVectorX.x() * bn::fixed(PLAYER_PAN_SPEED)));
             map_center.set_y(map_center.y() + (offsetUnitVectorX.y() * bn::fixed(PLAYER_PAN_SPEED)));
         }
-        else if(bn::keypad::b_held())
+        else if(input_key_flags & INPUT_B)
         {
             map_center.set_x(map_center.x() - (offsetUnitVectorX.x() * bn::fixed(PLAYER_PAN_SPEED)));
             map_center.set_y(map_center.y() - (offsetUnitVectorX.y() * bn::fixed(PLAYER_PAN_SPEED)));
         }
 
-        if(bn::keypad::down_held())
+        if(input_key_flags & INPUT_DOWN)
         {
             map_center.set_x(map_center.x() - (offsetUnitVectorY.x() * bn::fixed(PLAYER_BACK_SPEED)));
             map_center.set_y(map_center.y() - (offsetUnitVectorY.y() * bn::fixed(PLAYER_BACK_SPEED)));
         }
-        else if(bn::keypad::up_held())
+        else if(input_key_flags & INPUT_UP)
         {
             map_center.set_x(map_center.x() + (offsetUnitVectorY.x() * bn::fixed(PLAYER_FORWARD_SPEED)));
             map_center.set_y(map_center.y() + (offsetUnitVectorY.y() * bn::fixed(PLAYER_FORWARD_SPEED)));
@@ -146,20 +164,13 @@ namespace mks
     void Ingame::init_ui()
     {
         player_helicopter.init();
-        player_helicopter.set_sprite(bn::sprite_items::player_heli_center.create_sprite_optional(0,40,2));
-        player_helicopter.set_z_order(2);
-        
         compass.init();
-        compass.set_sprite(bn::sprite_items::compass1.create_sprite_optional(0,-71));
-        compass.set_z_order(0);
     }
 
     void Ingame::update_ui()
     {
-        player_helicopter.update();
-
-        compass.set_angle(map_yaw);
-        compass.update();
+        player_helicopter.update(input_key_flags);
+        compass.update(map_yaw);
     }
 
     void Ingame::shutdown_ui()

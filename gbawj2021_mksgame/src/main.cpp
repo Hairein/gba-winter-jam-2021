@@ -138,8 +138,8 @@ int main()
                     }
                     else
                     {
-                        main_affine_bg.get()->set_pivot_position(ingame.get_player_position());
-                        main_affine_bg.get()->set_rotation_angle(ingame.get_player_yaw_rotation());
+                        main_affine_bg.get()->set_pivot_position(ingame.get_map_position());
+                        main_affine_bg.get()->set_rotation_angle(ingame.get_map_yaw());
                     }
                 }
                 break;

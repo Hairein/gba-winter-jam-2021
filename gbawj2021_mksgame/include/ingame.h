@@ -7,13 +7,6 @@
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
 
-#include "bn_sprite_items_player_heli_forward.h"
-#include "bn_sprite_items_player_heli_center.h"
-#include "bn_sprite_items_player_heli_backward.h"
-#include "bn_sprite_items_compass1.h"
-#include "bn_sprite_items_turret_base_rotations.h"
-#include "bn_sprite_items_turret_gun_rotations.h"
-
 #include "globals.h"
 #include "vector_helper.h"
 #include "explosion_handler.h"
@@ -35,8 +28,8 @@ namespace mks
 
         GameState change_game_state();
 
-        bn::fixed_point get_player_position();
-        bn::fixed get_player_yaw_rotation();
+        bn::fixed_point get_map_position();
+        bn::fixed get_map_yaw();
 
     protected:
         VectorHelper vector_helper;
@@ -54,7 +47,10 @@ namespace mks
         bn::fixed_point map_center;
         bn::fixed map_yaw;
 
+        uint16_t input_key_flags;
+
         void init_navigation();
+        void update_input();
         void update_navigation();
         void shutdown_navigation();
 

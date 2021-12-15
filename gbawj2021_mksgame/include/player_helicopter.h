@@ -7,6 +7,10 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 
+#include "bn_sprite_items_player_heli_forward.h"
+#include "bn_sprite_items_player_heli_center.h"
+#include "bn_sprite_items_player_heli_backward.h"
+
 #include "globals.h"
 #include "ui_element.h"
 
@@ -20,7 +24,7 @@ namespace mks
         
         void init();
         void shutdown();
-        void update();
+        void update(uint16_t input_flags);
 
     protected:
         PitchState player_pitch_state;

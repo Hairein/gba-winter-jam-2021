@@ -7,6 +7,8 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 
+#include "bn_sprite_items_compass1.h"
+
 #include "globals.h"
 #include "ui_element.h"
 
@@ -17,6 +19,10 @@ namespace mks
     public: 
         Compass();
         ~Compass();
+        
+        void init();
+        void shutdown();
+        void update(bn::fixed& map_yaw);
     };
 }
 

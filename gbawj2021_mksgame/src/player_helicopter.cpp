@@ -21,8 +21,11 @@ namespace mks
         UiElement::shutdown();     
     }
 
-    void PlayerHelicopter::update()
+    void PlayerHelicopter::update(uint16_t input_flags)
     {
-        UiElement::update();     
+        UiElement::update(); 
+
+        set_sprite(bn::sprite_items::player_heli_center.create_sprite_optional(0,40,2));
+        set_z_order(2);
     }
 }

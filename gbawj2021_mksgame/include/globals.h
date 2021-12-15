@@ -11,6 +11,17 @@
 #define DEFAULT_SPRITE_VECTOR_SIZE 8
 #define SHORT_FRAME_HOLD 2
 
+#define INPUT_A 0x0001
+#define INPUT_B 0x0002
+#define INPUT_SELECT 0x0004
+#define INPUT_START 0x0008
+#define INPUT_RIGHT 0x0010
+#define INPUT_LEFT 0x0020
+#define INPUT_UP 0x0040
+#define INPUT_DOWN 0x0080
+#define INPUT_R 0x0100
+#define INPUT_L 0x0200 
+
 enum GameState 
 {
     GAMESTATE_NONE, 
