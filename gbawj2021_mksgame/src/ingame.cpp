@@ -136,12 +136,18 @@ namespace mks
     void Ingame::init_map()
     {
         enemy_turret_handler.init();
-
         // TEST
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, -40), 0, 0);
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -40), 0, 90);
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, 40), 0, 170);
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, 40), 0, 300);
+
+        enemy_helicopter_handler.init();
+        // TEST
+        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(-80, -80), 0);
+        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(80, -80), 90);
+        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(-80, 80), 170);
+        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(80, 80), 300);
 
         explosion_handler.init();
     }
@@ -152,12 +158,14 @@ namespace mks
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
         enemy_turret_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_helicopter_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
     void Ingame::shutdown_map()
     {
         enemy_turret_handler.shutdown();
+        enemy_helicopter_handler.shutdown();
         explosion_handler.shutdown();
     }
 

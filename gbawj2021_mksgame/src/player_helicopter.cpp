@@ -21,7 +21,7 @@ namespace mks
         UiElement::shutdown();     
     }
 
-    void PlayerHelicopter::update(uint16_t& input_flags,bn::fixed_point& ingame_center_offset)
+    void PlayerHelicopter::update(uint16_t input_flags,bn::fixed_point& ingame_center_offset)
     {
         UiElement::update(); 
 
@@ -45,7 +45,7 @@ namespace mks
         set_z_order(2);
     }
 
-    void PlayerHelicopter::evaluate_input(uint16_t& input_flags)
+    void PlayerHelicopter::evaluate_input(uint16_t input_flags)
     {
         // Left/Right
         if(input_flags & INPUT_LEFT)

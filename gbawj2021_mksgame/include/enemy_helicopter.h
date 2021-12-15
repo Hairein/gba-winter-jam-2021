@@ -1,5 +1,5 @@
-#ifndef MKS_PLAYER_HELICOPTER_H
-#define MKS_PLAYER_HELICOPTER_H
+#ifndef MKS_ENEMY_HELICOPTER_H
+#define MKS_ENEMY_HELICOPTER_H
 
 #include "bn_core.h"
 #include "bn_optional.h"
@@ -7,24 +7,27 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 
-#include "bn_sprite_items_player_heli.h"
+#include "bn_sprite_items_enemy_heli.h"
 
 #include "globals.h"
-#include "ui_element.h"
+#include "map_entity.h"
+#include "vector_helper.h"
 
 namespace mks
 {
-    class PlayerHelicopter : public UiElement
+    class EnemyHelicopter : public MapEntity
     {
     public: 
-        PlayerHelicopter();
-        ~PlayerHelicopter();
+        EnemyHelicopter();
+        ~EnemyHelicopter();
         
-        void init();
+        void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
-        void update(uint16_t input_flags, bn::fixed_point& ingame_center_offset);
+        void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
 
     protected:
+        bn::fixed initial_facing_angle;
+
         PitchState player_pitch_state = PITCHSTATE_CENTER;
         int pitch_state_counter = 0;
         int pitch_state_zero = 0;
@@ -35,8 +38,6 @@ namespace mks
         int roll_state_zero = 0;
         int roll_state_min = -15;
         int roll_state_max = 15;
-
-        void evaluate_input(uint16_t input_flags);
     };
 }
 
