@@ -137,10 +137,10 @@ namespace mks
     {
         enemy_turret_handler.init();
         // TEST
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, -40), 0, 0);
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -40), 0, 90);
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, 40), 0, 170);
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, 40), 0, 300);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, -40), 0);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -40), 90);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, 40), 170);
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, 40), 300);
 
         enemy_helicopter_handler.init();
         // TEST

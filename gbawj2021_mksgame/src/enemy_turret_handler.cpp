@@ -35,15 +35,14 @@ namespace mks
         }
     }
 
-    bool EnemyTurretHandler::spawn_enemy_turret(bn::fixed_point map_position, bn::fixed map_angle, int facing_angle)
+    bool EnemyTurretHandler::spawn_enemy_turret(bn::fixed_point map_position, bn::fixed map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
             if(!enemy_turrets[index].is_active())
             {
                 // Spawn both sprites at same position, angle
-                enemy_turrets[index].init(map_position, map_angle,
-                    facing_angle);
+                enemy_turrets[index].init(map_position, map_angle);
                 
                 return true;
             }

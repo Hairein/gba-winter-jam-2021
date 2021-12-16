@@ -24,7 +24,7 @@ namespace mks
         void shutdown();
         void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
        
-        bool spawn_enemy_turret(bn::fixed_point map_position, bn::fixed map_angle, int facing_angle);
+        bool spawn_enemy_turret(bn::fixed_point map_position, bn::fixed map_angle);
 
     protected:
         bn::vector<EnemyTurret,DEFAULT_SPRITE_VECTOR_SIZE> enemy_turrets;

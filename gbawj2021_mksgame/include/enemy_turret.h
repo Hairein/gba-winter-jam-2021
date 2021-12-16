@@ -7,8 +7,8 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 
-#include "bn_sprite_items_turret_base_rotations.h"
-#include "bn_sprite_items_turret_gun_rotations.h"
+#include "bn_sprite_items_enemy_turret1_base.h"
+#include "bn_sprite_items_enemy_turret1_gun.h"
 
 #include "globals.h"
 #include "dual_map_entity.h"
@@ -22,13 +22,12 @@ namespace mks
         EnemyTurret();
         ~EnemyTurret();
         
-        void init(bn::fixed_point& new_position, bn::fixed& new_angle,
-            int facing_angle);
+        void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
         void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
 
     protected:
-        int initial_facing_angle;
+        bn::fixed initial_facing_angle;
     };
 }
 
