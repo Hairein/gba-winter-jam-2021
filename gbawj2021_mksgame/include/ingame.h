@@ -12,6 +12,7 @@
 #include "explosion_handler.h"
 #include "enemy_turret_handler.h"
 #include "enemy_helicopter_handler.h"
+#include "pow_cage_handler.h"
 #include "compass.h"
 #include "player_helicopter.h"
 
@@ -37,6 +38,7 @@ namespace mks
 
         EnemyTurretHandler enemy_turret_handler;
         EnemyHelicopterHandler enemy_helicopter_handler;
+        PowCageHandler pow_cage_handler;
         ExplosionHandler explosion_handler;
 
         Compass compass;

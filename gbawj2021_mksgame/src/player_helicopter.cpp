@@ -50,7 +50,7 @@ namespace mks
         set_z_order(2);
 
         rotor_counter++;
-        while(rotor_counter >= 4) rotor_counter -= 4; 
+        while(rotor_counter >= MAX_PLAYER_ROTOR_INDEX) rotor_counter -= MAX_PLAYER_ROTOR_INDEX; 
     }
 
     void PlayerHelicopter::evaluate_input(uint16_t input_flags)
