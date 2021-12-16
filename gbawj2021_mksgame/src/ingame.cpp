@@ -141,6 +141,13 @@ namespace mks
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -40), 90);
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, 40), 170);
         enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, 40), 300);
+        
+        enemy_tank_handler.init();
+        // TEST
+        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(-40, -120), 0);
+        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(40, -120), 90);
+        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(-40, 120), 170);
+        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(40, 120), 300);
 
         enemy_helicopter_handler.init();
         // TEST
@@ -165,6 +172,7 @@ namespace mks
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
         enemy_turret_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_tank_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         enemy_helicopter_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         pow_cage_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
@@ -173,6 +181,7 @@ namespace mks
     void Ingame::shutdown_map()
     {
         enemy_turret_handler.shutdown();
+        enemy_tank_handler.shutdown();
         enemy_helicopter_handler.shutdown();
         pow_cage_handler.shutdown();
         explosion_handler.shutdown();
