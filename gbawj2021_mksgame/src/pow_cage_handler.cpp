@@ -14,8 +14,8 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            PowCage new_enemy_heli;
-            pow_cages.push_back(new_enemy_heli);
+            PowCage new_pow_cage;
+            pow_cages.push_back(new_pow_cage);
         }
     }
 

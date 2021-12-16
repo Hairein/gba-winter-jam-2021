@@ -43,6 +43,15 @@ namespace mks
             return;
         }
 
+        // TEST
+        if(bn::keypad::r_released())
+        {
+            pow_handler.spawn_pow(bn::fixed_point(-120, -120), 0);
+            pow_handler.spawn_pow(bn::fixed_point(120, -120), 90);
+            pow_handler.spawn_pow(bn::fixed_point(-120, 120), 170);
+            pow_handler.spawn_pow(bn::fixed_point(120, 120), 300);
+        }
+
         update_navigation();
 
         update_ui();
@@ -162,6 +171,8 @@ namespace mks
         pow_cage_handler.spawn_pow_cage(bn::fixed_point(120, -80), 90);
         pow_cage_handler.spawn_pow_cage(bn::fixed_point(-120, 80), 170);
         pow_cage_handler.spawn_pow_cage(bn::fixed_point(120, 80), 300);
+        
+        pow_handler.init();
 
         explosion_handler.init();
     }
@@ -175,6 +186,7 @@ namespace mks
         enemy_tank_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         enemy_helicopter_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         pow_cage_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
+        pow_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
@@ -184,6 +196,7 @@ namespace mks
         enemy_tank_handler.shutdown();
         enemy_helicopter_handler.shutdown();
         pow_cage_handler.shutdown();
+        pow_handler.shutdown();
         explosion_handler.shutdown();
     }
 
