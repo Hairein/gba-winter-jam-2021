@@ -1,21 +1,22 @@
-#ifndef MKS_DUAL_UI_ELEMENT_H
-#define MKS_DUAL_UI_ELEMENT_H
+#ifndef MKS_MULTI_UI_ELEMENT_H
+#define MKS_MULTI_UI_ELEMENT_H
 
 #include "bn_core.h"
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
+#include "bn_vector.h"
 
 #include "globals.h"
 
 namespace mks
 {
-    class DualUiElement
+    class MultiUiElement
     {
     public: 
-        DualUiElement();
-        ~DualUiElement();
+        MultiUiElement(int size);
+        ~MultiUiElement();
         
         void init();
         void shutdown();
@@ -38,7 +39,7 @@ namespace mks
     protected:
         bool active;
         
-        bn::optional<bn::sprite_ptr> sprite[2];
+        bn::vector<bn::optional<bn::sprite_ptr>,DEFAULT_SPRITE_VECTOR_SIZE> sprites;
     };
 }
 

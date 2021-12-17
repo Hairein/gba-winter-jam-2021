@@ -11,11 +11,11 @@
 #include "bn_sprite_items_health_pip.h"
 
 #include "globals.h"
-#include "dual_ui_element.h"
+#include "multi_ui_element.h"
 
 namespace mks
 {
-    class HealthDisplay : public DualUiElement
+    class HealthDisplay : public MultiUiElement
     {
     public: 
         HealthDisplay();

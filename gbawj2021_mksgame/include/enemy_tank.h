@@ -11,12 +11,12 @@
 #include "bn_sprite_items_enemy_tank_turret.h"
 
 #include "globals.h"
-#include "dual_map_entity.h"
+#include "multi_map_entity.h"
 #include "vector_helper.h"
 
 namespace mks
 {
-    class EnemyTank : public DualMapEntity
+    class EnemyTank : public MultiMapEntity
     {
     public: 
         EnemyTank();

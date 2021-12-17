@@ -3,6 +3,7 @@
 namespace mks
 {
     HealthDisplay::HealthDisplay()
+        : MultiUiElement(2)
     {
     }
 
@@ -12,7 +13,7 @@ namespace mks
 
     void HealthDisplay::init(bn::fixed& player_health)
     {   
-        DualUiElement::init();  
+        MultiUiElement::init();  
 
         set_sprite(0, bn::sprite_items::health_bar.create_sprite_optional(-70,-71));
         set_z_order(0, 1);
@@ -27,12 +28,12 @@ namespace mks
 
     void HealthDisplay::shutdown()
     {
-        DualUiElement::shutdown();     
+        MultiUiElement::shutdown();     
     }
 
     void HealthDisplay::update(bn::fixed& player_health)
     {
-        DualUiElement::update(); 
+        MultiUiElement::update(); 
 
         if(last_health_value != player_health)
         {

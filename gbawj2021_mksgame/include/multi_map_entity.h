@@ -1,21 +1,22 @@
-#ifndef MKS_DUAL_MAP_ENTITY_H
-#define MKS_DUAL_MAP_ENTITY_H
+#ifndef MKS_MULTI_MAP_ENTITY_H
+#define MKS_MULTI_MAP_ENTITY_H
 
 #include "bn_core.h"
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
+#include "bn_vector.h"
 
 #include "globals.h"
 
 namespace mks
 {
-    class DualMapEntity
+    class MultiMapEntity
     {
     public: 
-        DualMapEntity();
-        ~DualMapEntity();
+        MultiMapEntity(int size);
+        ~MultiMapEntity();
         
         void init();
         void shutdown();
@@ -38,10 +39,10 @@ namespace mks
     protected:
         bool active;
 
-        bn::fixed_point position[2];
-        bn::fixed angle[2];
+        bn::vector<bn::fixed_point,DEFAULT_SPRITE_VECTOR_SIZE> positions;
+        bn::vector<bn::fixed,DEFAULT_SPRITE_VECTOR_SIZE> angles;
         
-        bn::optional<bn::sprite_ptr> sprite[2];
+        bn::vector<bn::optional<bn::sprite_ptr>,DEFAULT_SPRITE_VECTOR_SIZE> sprites;
     };
 }
 

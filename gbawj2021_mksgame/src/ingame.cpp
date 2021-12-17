@@ -149,12 +149,16 @@ namespace mks
 
     void Ingame::init_map()
     {
-        enemy_turret_handler.init();       
+        enemy_turret_handler.init();    
         enemy_tank_handler.init();
         enemy_helicopter_handler.init();
         pow_cage_handler.init();        
         pow_handler.init();
         explosion_handler.init();
+
+        // TEST
+        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -120), bn::fixed(180));   
+        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(-40, -160), bn::fixed(180));   
     }
 
     void Ingame::update_map()
