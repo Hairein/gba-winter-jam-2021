@@ -16,6 +16,7 @@
 #include "pow_cage_handler.h"
 #include "pow_handler.h"
 #include "compass.h"
+#include "health_display.h"
 #include "player_helicopter.h"
 
 namespace mks
@@ -46,6 +47,7 @@ namespace mks
         ExplosionHandler explosion_handler;
 
         Compass compass;
+        HealthDisplay health_display;
         PlayerHelicopter player_helicopter;
 
         GameState next_game_state;
@@ -56,6 +58,8 @@ namespace mks
         bn::fixed map_yaw;
 
         uint16_t input_key_flags;
+
+        bn::fixed player_health_percent;
 
         void init_navigation();
         void update_input();

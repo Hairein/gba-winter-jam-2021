@@ -19,6 +19,8 @@ namespace mks
 
         ingame_center_offset = new_ingame_center_offset;
 
+        player_health_percent = bn::fixed(100);
+
         init_navigation();
 
         init_ui();
@@ -44,12 +46,15 @@ namespace mks
         }
 
         // TEST
-        if(bn::keypad::r_released())
+        if(bn::keypad::l_held())
         {
-            pow_handler.spawn_pow(bn::fixed_point(-120, -120), 0);
-            pow_handler.spawn_pow(bn::fixed_point(120, -120), 90);
-            pow_handler.spawn_pow(bn::fixed_point(-120, 120), 170);
-            pow_handler.spawn_pow(bn::fixed_point(120, 120), 300);
+            player_health_percent -= bn::fixed(1);
+            if(player_health_percent < bn::fixed(0)) player_health_percent = bn::fixed(0);
+        }
+        else if(bn::keypad::r_held())
+        {
+            player_health_percent += bn::fixed(1);
+            if(player_health_percent > bn::fixed(100)) player_health_percent = bn::fixed(100);
         }
 
         update_navigation();
@@ -144,36 +149,11 @@ namespace mks
 
     void Ingame::init_map()
     {
-        enemy_turret_handler.init();
-        // TEST
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, -40), 0);
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -40), 90);
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(-40, 40), 170);
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, 40), 300);
-        
+        enemy_turret_handler.init();       
         enemy_tank_handler.init();
-        // TEST
-        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(-40, -120), 0);
-        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(40, -120), 90);
-        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(-40, 120), 170);
-        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(40, 120), 300);
-
         enemy_helicopter_handler.init();
-        // TEST
-        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(-80, -80), 0);
-        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(80, -80), 90);
-        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(-80, 80), 170);
-        enemy_helicopter_handler.spawn_enemy_helicopter(bn::fixed_point(80, 80), 300);
-        
-        pow_cage_handler.init();
-        // TEST
-        pow_cage_handler.spawn_pow_cage(bn::fixed_point(-120, -80), 0);
-        pow_cage_handler.spawn_pow_cage(bn::fixed_point(120, -80), 90);
-        pow_cage_handler.spawn_pow_cage(bn::fixed_point(-120, 80), 170);
-        pow_cage_handler.spawn_pow_cage(bn::fixed_point(120, 80), 300);
-        
+        pow_cage_handler.init();        
         pow_handler.init();
-
         explosion_handler.init();
     }
 
@@ -204,17 +184,20 @@ namespace mks
     {
         player_helicopter.init();
         compass.init();
+        health_display.init(player_health_percent);
     }
 
     void Ingame::update_ui()
     {
         player_helicopter.update(input_key_flags, ingame_center_offset);
         compass.update(map_yaw);
-    }
+        health_display.update(player_health_percent);
+   }
 
     void Ingame::shutdown_ui()
     {
         player_helicopter.shutdown();
         compass.shutdown();
+        health_display.shutdown();
     }
 }
