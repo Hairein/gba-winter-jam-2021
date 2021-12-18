@@ -22,6 +22,7 @@
 #include "health_display.h"
 #include "pows_left_display.h"
 #include "player_helicopter.h"
+#include "rtb_message_display.h"
 
 namespace mks
 {
@@ -56,6 +57,7 @@ namespace mks
         std::unique_ptr<HealthDisplay> health_display;
         std::unique_ptr<PowsLeftDisplay> pows_left_display;
         std::unique_ptr<PlayerHelicopter> player_helicopter;
+        std::unique_ptr<RtbMessageDisplay> rtb_message_display;
 
         GameState next_game_state;
 
@@ -67,8 +69,9 @@ namespace mks
         uint16_t input_key_flags;
 
         bn::fixed player_health_percent;
+        int pows_initial;
         int pows_left;
-
+        
         void init_navigation();
         void update_input();
         void update_navigation();

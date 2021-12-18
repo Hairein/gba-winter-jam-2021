@@ -20,7 +20,9 @@ namespace mks
         ingame_center_offset = new_ingame_center_offset;
 
         player_health_percent = bn::fixed(100);
-        pows_left = 15; // TODO Determine nos pows to be rescued in map 
+        
+        pows_initial = 15;// TODO Determine nos pows to be rescued in map 
+        pows_left = pows_initial; 
 
         vector_helper.reset(new VectorHelper());
         random.reset(new bn::random());
@@ -223,6 +225,9 @@ namespace mks
 
         pows_left_display.reset(new PowsLeftDisplay());
         pows_left_display.get()->init(pows_left);
+
+        rtb_message_display.reset(new RtbMessageDisplay());
+        rtb_message_display.get()->init();
     }
 
     void Ingame::update_ui()
@@ -231,6 +236,7 @@ namespace mks
         compass.get()->update(map_yaw);
         health_display.get()->update(player_health_percent);
         pows_left_display.get()->update(pows_left);
+        rtb_message_display.get()->update(pows_left == 0);
    }
 
     void Ingame::shutdown_ui()
@@ -246,5 +252,8 @@ namespace mks
 
         pows_left_display.get()->shutdown();
         pows_left_display.reset();
+
+        rtb_message_display.get()->shutdown();
+        rtb_message_display.reset();
     }
 }
