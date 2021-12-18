@@ -24,7 +24,7 @@ namespace mks
         enemy_turrets.clear();
     }
 
-    void EnemyTurretHandler::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyTurretHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool EnemyTurretHandler::spawn_enemy_turret(bn::fixed_point map_position, bn::fixed map_angle)
+    bool EnemyTurretHandler::spawn_enemy_turret(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {

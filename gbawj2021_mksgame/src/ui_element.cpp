@@ -42,7 +42,7 @@ namespace mks
         return sprite;
     }
 
-    void UiElement::set_position(bn::fixed_point new_position)
+    void UiElement::set_position(bn::fixed_point& new_position)
     {
         sprite.get()->set_position(new_position);
     }
@@ -52,7 +52,7 @@ namespace mks
         return sprite.get()->position();
     }
 
-    void UiElement::set_angle(bn::fixed new_angle)
+    void UiElement::set_angle(bn::fixed& new_angle)
     {
         sprite.get()->set_rotation_angle(new_angle);
     }

@@ -24,7 +24,7 @@ namespace mks
         craters.clear();
     }
 
-    void CraterHandler::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void CraterHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool CraterHandler::spawn(bn::random& random, bn::fixed_point& map_position)
+    bool CraterHandler::spawn(std::unique_ptr<bn::random>& random, bn::fixed_point& map_position)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {

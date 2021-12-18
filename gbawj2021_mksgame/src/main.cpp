@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "bn_core.h"
 #include "bn_sprite_text_generator.h"
 #include "bn_bg_palettes.h"
@@ -37,11 +39,11 @@ void move_to_game_state(GameState new_game_state,
     GameState& current_game_state,
     bn::optional<bn::affine_bg_ptr>& affine_bg,
     bn::optional<bn::regular_bg_ptr>& regular_bg,
-    mks::Credits& credits,
-    mks::Ingame& ingame,
-    mks::StartGame& start_game,
-    mks::Settings& settings,
-    mks::Title& title);
+    std::unique_ptr<mks::Credits>& credits,
+    std::unique_ptr<mks::Ingame>& ingame,
+    std::unique_ptr<mks::StartGame>& start_game,
+    std::unique_ptr<mks::Settings>& settings,
+    std::unique_ptr<mks::Title>& title);
 
 int main()
 {
@@ -59,11 +61,11 @@ int main()
     bn::optional<bn::affine_bg_ptr> main_affine_bg;
     bn::optional<bn::regular_bg_ptr> main_regular_bg;
 
-    mks::Credits credits;
-    mks::Ingame ingame;
-    mks::StartGame start_game;
-    mks::Settings settings;
-    mks::Title title;
+    std::unique_ptr<mks::Credits> credits;
+    std::unique_ptr<mks::Ingame> ingame;
+    std::unique_ptr<mks::StartGame> start_game;
+    std::unique_ptr<mks::Settings> settings;
+    std::unique_ptr<mks::Title> title;
 
     GameState previous_game_state = GameState::GAMESTATE_NONE;
     GameState current_game_state = GameState::GAMESTATE_NONE;
@@ -99,11 +101,11 @@ int main()
                 break;
             case GameState::GAMESTATE_CREDITS:
                 {
-                    credits.update();
+                    credits.get()->update();
 
-                    if(credits.change_game_state() != GameState::GAMESTATE_NONE)
+                    if(credits.get()->change_game_state() != GameState::GAMESTATE_NONE)
                     {
-                        move_to_game_state(credits.change_game_state(), 
+                        move_to_game_state(credits.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_affine_bg, 
@@ -121,11 +123,11 @@ int main()
                 break;
             case GameState::GAMESTATE_INGAME:
                 {
-                    ingame.update();
+                    ingame.get()->update();
 
-                    if(ingame.change_game_state() != GameState::GAMESTATE_NONE)
+                    if(ingame.get()->change_game_state() != GameState::GAMESTATE_NONE)
                     {
-                        move_to_game_state(ingame.change_game_state(), 
+                        move_to_game_state(ingame.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_affine_bg, 
@@ -138,18 +140,18 @@ int main()
                     }
                     else
                     {
-                        main_affine_bg.get()->set_pivot_position(ingame.get_map_position());
-                        main_affine_bg.get()->set_rotation_angle(ingame.get_map_yaw());
+                        main_affine_bg.get()->set_pivot_position(ingame.get()->get_map_position());
+                        main_affine_bg.get()->set_rotation_angle(ingame.get()->get_map_yaw());
                     }
                 }
                 break;
             case GameState::GAMESTATE_START_GAME:
                 {
-                    start_game.update();
+                    start_game.get()->update();
 
-                    if(start_game.change_game_state() != GameState::GAMESTATE_NONE)
+                    if(start_game.get()->change_game_state() != GameState::GAMESTATE_NONE)
                     {
-                        move_to_game_state(start_game.change_game_state(), 
+                        move_to_game_state(start_game.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_affine_bg, 
@@ -167,11 +169,11 @@ int main()
                 break;
             case GameState::GAMESTATE_SETTINGS:
                 {
-                    settings.update();
+                    settings.get()->update();
 
-                    if(settings.change_game_state() != GameState::GAMESTATE_NONE)
+                    if(settings.get()->change_game_state() != GameState::GAMESTATE_NONE)
                     {
-                        move_to_game_state(settings.change_game_state(), 
+                        move_to_game_state(settings.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_affine_bg, 
@@ -189,11 +191,11 @@ int main()
                 break;
             case GameState::GAMESTATE_TITLE:
                 {
-                    title.update();
+                    title.get()->update();
 
-                    if(title.change_game_state() != GameState::GAMESTATE_NONE)
+                    if(title.get()->change_game_state() != GameState::GAMESTATE_NONE)
                     {
-                        move_to_game_state(title.change_game_state(), 
+                        move_to_game_state(title.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
                             main_affine_bg, 
@@ -226,11 +228,11 @@ void move_to_game_state(GameState new_game_state,
     GameState& current_game_state,
     bn::optional<bn::affine_bg_ptr>& affine_bg,
     bn::optional<bn::regular_bg_ptr>& regular_bg,
-    mks::Credits& credits,
-    mks::Ingame& ingame,
-    mks::StartGame& start_game,
-    mks::Settings& settings,
-    mks::Title& title)
+    std::unique_ptr<mks::Credits>& credits,
+    std::unique_ptr<mks::Ingame>& ingame,
+    std::unique_ptr<mks::StartGame>& start_game,
+    std::unique_ptr<mks::Settings>& settings,
+    std::unique_ptr<mks::Title>& title)
 {
     previous_game_state = current_game_state;
     switch(previous_game_state)
@@ -241,7 +243,8 @@ void move_to_game_state(GameState new_game_state,
                 
                 regular_bg.reset();
 
-                title.shutdown();
+                title.get()->shutdown();
+                title.reset();
             }
             break;
         case GameState::GAMESTATE_START_GAME:
@@ -250,7 +253,8 @@ void move_to_game_state(GameState new_game_state,
                 
                 regular_bg.reset();
 
-                start_game.shutdown();
+                start_game.get()->shutdown();
+                start_game.reset();
             }
             break;
         case GameState::GAMESTATE_SETTINGS:
@@ -259,7 +263,8 @@ void move_to_game_state(GameState new_game_state,
                 
                 regular_bg.reset();
 
-                settings.shutdown();
+                settings.get()->shutdown();
+                settings.reset();
             }
             break;
         case GameState::GAMESTATE_CREDITS:
@@ -268,7 +273,8 @@ void move_to_game_state(GameState new_game_state,
                 
                 regular_bg.reset();
 
-                credits.shutdown();
+                credits.get()->shutdown();
+                credits.reset();
             }
             break;
         case GameState::GAMESTATE_INGAME:
@@ -277,7 +283,8 @@ void move_to_game_state(GameState new_game_state,
 
                 affine_bg.reset();
 
-                ingame.shutdown();
+                ingame.get()->shutdown();
+                ingame.reset();
             }
             break;
         default:
@@ -296,7 +303,8 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.get()->set_priority(3); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
-                title.init();
+                title.reset(new mks::Title());
+                title.get()->init();
             }
             break;
         case GameState::GAMESTATE_START_GAME:
@@ -308,7 +316,8 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.get()->set_priority(3); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
-                start_game.init();
+                start_game.reset(new mks::StartGame());
+                start_game.get()->init();
             }
             break;
         case GameState::GAMESTATE_SETTINGS:
@@ -320,7 +329,8 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.get()->set_priority(3); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
-                settings.init();
+                settings.reset(new mks::Settings());
+                settings.get()->init();
             }
             break;
         case GameState::GAMESTATE_CREDITS:
@@ -332,7 +342,8 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.get()->set_priority(3); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
-                credits.init();
+                credits.reset(new mks::Credits());
+                credits.get()->init();
             }
             break;
         case GameState::GAMESTATE_INGAME:
@@ -347,7 +358,8 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.get()->set_wrapping_enabled(false);    
                 affine_bg.get()->set_position(ingame_center_offset);
 
-                ingame.init(ingame_center_offset);
+                ingame.reset(new mks::Ingame());
+                ingame.get()->init(ingame_center_offset);
             }
             break;
         default:

@@ -52,7 +52,7 @@ namespace mks
         return sprites[index];
     }
 
-    void MultiUiElement::set_position(int index, bn::fixed_point new_position)
+    void MultiUiElement::set_position(int index, bn::fixed_point& new_position)
     {
         sprites[index].get()->set_position(new_position);
     }
@@ -62,7 +62,7 @@ namespace mks
         return sprites[index].get()->position();
     }
 
-    void MultiUiElement::set_angle(int index, bn::fixed new_angle)
+    void MultiUiElement::set_angle(int index, bn::fixed& new_angle)
     {
         sprites[index].get()->set_rotation_angle(new_angle);
     }

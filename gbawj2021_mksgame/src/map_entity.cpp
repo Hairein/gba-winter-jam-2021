@@ -42,7 +42,7 @@ namespace mks
         return sprite;
     }
 
-    void MapEntity::set_map_position(bn::fixed_point new_map_position)
+    void MapEntity::set_map_position(bn::fixed_point& new_map_position)
     {
         position = new_map_position;
     }
@@ -52,7 +52,7 @@ namespace mks
         return position;
     }
 
-    void MapEntity::set_map_angle(bn::fixed new_angle)
+    void MapEntity::set_map_angle(bn::fixed& new_angle)
     {
         angle = new_angle;
     }

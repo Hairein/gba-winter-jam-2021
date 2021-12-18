@@ -29,7 +29,7 @@ namespace mks
         MultiMapEntity::shutdown();
     }
 
-    void EnemyTurret::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyTurret::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         MultiMapEntity::update();
 
@@ -42,8 +42,8 @@ namespace mks
 
         bn::fixed_point new_sprite_position[2];
         bn::fixed new_sprite_rotation[2];
-        vector_helper.calculate_sprite_position_angle(map_center, map_yaw, positions[0], angles[0], new_sprite_position[0], new_sprite_rotation[0]);
-        vector_helper.calculate_sprite_position_angle(map_center, map_yaw, positions[1], angles[1], new_sprite_position[1], new_sprite_rotation[1]);
+        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, positions[0], angles[0], new_sprite_position[0], new_sprite_rotation[0]);
+        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, positions[1], angles[1], new_sprite_position[1], new_sprite_rotation[1]);
 
         set_sprite(0, bn::sprite_items::enemy_turret1_base.create_sprite_optional(new_sprite_position[0].x(), new_sprite_position[0].y(), 0));
         sprites[0].get()->set_z_order(4);

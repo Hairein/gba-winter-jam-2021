@@ -24,7 +24,7 @@ namespace mks
         pows.clear();
     }
 
-    void PowHandler::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void PowHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool PowHandler::spawn_pow(bn::fixed_point map_position, bn::fixed map_angle)
+    bool PowHandler::spawn(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
@@ -49,5 +49,4 @@ namespace mks
 
         return false;
     }
-
 }

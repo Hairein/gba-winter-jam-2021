@@ -24,7 +24,7 @@ namespace mks
         int calculate_sprite_index_from_facing(int facing_angle);
         
     protected:
-        bn::fixed_point rotated_unit_vectors_x[360] =
+        const bn::fixed_point rotated_unit_vectors_x[360] =
         {
             {bn::fixed(1), bn::fixed(0)}, //0
             {bn::fixed(0.999848), bn::fixed(0.0174524)}, //1
@@ -388,7 +388,7 @@ namespace mks
             {bn::fixed(0.999848), bn::fixed(-0.0174524)} //359
         };
 
-        bn::fixed_point rotated_unit_vectors_y[360] =
+        const bn::fixed_point rotated_unit_vectors_y[360] =
         {
             {bn::fixed(0), bn::fixed(-1)}, //0
             {bn::fixed(0.0174524), bn::fixed(-0.999848)}, //1

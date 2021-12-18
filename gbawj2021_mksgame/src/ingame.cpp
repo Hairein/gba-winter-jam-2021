@@ -22,6 +22,9 @@ namespace mks
         player_health_percent = bn::fixed(100);
         pows_left = 15; // TODO Determine nos pows to be rescued in map 
 
+        vector_helper.reset(new VectorHelper());
+        random.reset(new bn::random());
+
         init_navigation();
 
         init_ui();
@@ -30,6 +33,9 @@ namespace mks
 
     void Ingame::shutdown()
     {
+        vector_helper.reset();
+        random.reset();
+
         shutdown_navigation();
         
         shutdown_ui();
@@ -112,8 +118,8 @@ namespace mks
  
         // ---
         auto floored_yaw = map_yaw.floor_integer();
-        auto offsetUnitVectorX = vector_helper.get_rotated_unit_vector_x(floored_yaw);
-        auto offsetUnitVectorY = vector_helper.get_rotated_unit_vector_y(floored_yaw);
+        auto offsetUnitVectorX = vector_helper.get()->get_rotated_unit_vector_x(floored_yaw);
+        auto offsetUnitVectorY = vector_helper.get()->get_rotated_unit_vector_y(floored_yaw);
 
         if(input_key_flags & INPUT_A)
         {
@@ -144,101 +150,101 @@ namespace mks
 
     void Ingame::init_map()
     {
-        enemy_turret_handler = new EnemyTurretHandler();
-        enemy_turret_handler->init(); 
+        enemy_turret_handler.reset(new EnemyTurretHandler());
+        enemy_turret_handler.get()->init(); 
 
-        enemy_tank_handler = new EnemyTankHandler();
-        enemy_tank_handler->init();
+        enemy_tank_handler.reset(new EnemyTankHandler());
+        enemy_tank_handler.get()->init();
 
-        enemy_helicopter_handler = new EnemyHelicopterHandler();
-        enemy_helicopter_handler->init();
+        enemy_helicopter_handler.reset(new EnemyHelicopterHandler());
+        enemy_helicopter_handler.get()->init();
 
-        pow_cage_handler = new PowCageHandler();
-        pow_cage_handler->init();        
+        pow_cage_handler.reset(new PowCageHandler());
+        pow_cage_handler.get()->init();        
 
-        pow_handler = new PowHandler();
-        pow_handler->init();
+        pow_handler.reset(new PowHandler());
+        pow_handler.get()->init();
 
-        explosion_handler = new ExplosionHandler();
-        explosion_handler->init();
+        explosion_handler.reset(new ExplosionHandler());
+        explosion_handler.get()->init();
 
-        crater_handler = new CraterHandler();
-        crater_handler->init();
+        crater_handler.reset(new CraterHandler());
+        crater_handler.get()->init();
     }
 
     void Ingame::update_map()
     {
-        auto rotated_ingame_center_offset = vector_helper.rotate_vector(ingame_center_offset, map_yaw);
+        auto rotated_ingame_center_offset = vector_helper.get()->rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
-        enemy_turret_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        enemy_tank_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        enemy_helicopter_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        pow_cage_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        pow_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        explosion_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        crater_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_turret_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_tank_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_helicopter_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        pow_cage_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        pow_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        explosion_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        crater_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
     void Ingame::shutdown_map()
     {
-        enemy_turret_handler->shutdown();
-        delete enemy_turret_handler;
+        enemy_turret_handler.get()->shutdown();
+        enemy_turret_handler.reset();
 
-        enemy_tank_handler->shutdown();
-        delete enemy_tank_handler;
+        enemy_tank_handler.get()->shutdown();
+        enemy_tank_handler.reset();
 
-        enemy_helicopter_handler->shutdown();
-        delete enemy_helicopter_handler;
+        enemy_helicopter_handler.get()->shutdown();
+        enemy_helicopter_handler.reset();
 
-        pow_cage_handler->shutdown();
-        delete pow_cage_handler;
+        pow_cage_handler.get()->shutdown();
+        pow_cage_handler.reset();
 
-        pow_handler->shutdown();
-        delete pow_handler;
+        pow_handler.get()->shutdown();
+        pow_handler.reset();
 
-        explosion_handler->shutdown();
-        delete explosion_handler;
+        explosion_handler.get()->shutdown();
+        explosion_handler.reset();
 
-        crater_handler->shutdown();
-        delete crater_handler;
+        crater_handler.get()->shutdown();
+        crater_handler.reset();
     }
 
     void Ingame::init_ui()
     {
-        player_helicopter = new PlayerHelicopter();
-        player_helicopter->init();
+        player_helicopter.reset(new PlayerHelicopter());
+        player_helicopter.get()->init();
 
-        compass = new Compass();
-        compass->init();
+        compass.reset(new Compass());
+        compass.get()->init();
 
-        health_display = new HealthDisplay();
-        health_display->init(player_health_percent);
+        health_display.reset(new HealthDisplay());
+        health_display.get()->init(player_health_percent);
 
-        pows_left_display = new PowsLeftDisplay();
-        pows_left_display->init(pows_left);
+        pows_left_display.reset(new PowsLeftDisplay());
+        pows_left_display.get()->init(pows_left);
     }
 
     void Ingame::update_ui()
     {
-        player_helicopter->update(input_key_flags, ingame_center_offset);
-        compass->update(map_yaw);
-        health_display->update(player_health_percent);
-        pows_left_display->update(pows_left);
+        player_helicopter.get()->update(input_key_flags, ingame_center_offset);
+        compass.get()->update(map_yaw);
+        health_display.get()->update(player_health_percent);
+        pows_left_display.get()->update(pows_left);
    }
 
     void Ingame::shutdown_ui()
     {
-        player_helicopter->shutdown();
-        delete player_helicopter;
+        player_helicopter.get()->shutdown();
+        player_helicopter.reset();
         
-        compass->shutdown();
-        delete compass;
+        compass.get()->shutdown();
+        compass.reset();
 
-        health_display->shutdown();
-        delete health_display;
+        health_display.get()->shutdown();
+        health_display.reset();
 
-        pows_left_display->shutdown();
-        delete pows_left_display;
+        pows_left_display.get()->shutdown();
+        pows_left_display.reset();
     }
 }

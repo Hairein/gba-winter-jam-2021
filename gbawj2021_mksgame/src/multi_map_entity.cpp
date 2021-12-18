@@ -55,7 +55,7 @@ namespace mks
         return sprites[index];
     }
 
-    void MultiMapEntity::set_map_position(int index, bn::fixed_point new_map_position)
+    void MultiMapEntity::set_map_position(int index, bn::fixed_point& new_map_position)
     {
         positions[index] = new_map_position;
     }
@@ -65,7 +65,7 @@ namespace mks
         return positions[index];
     }
 
-    void MultiMapEntity::set_map_angle(int index, bn::fixed new_angle)
+    void MultiMapEntity::set_map_angle(int index, bn::fixed& new_angle)
     {
         angles[index] = new_angle;
     }

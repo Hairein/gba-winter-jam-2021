@@ -1,6 +1,8 @@
 #ifndef MKS_ENEMY_TANK_H
 #define MKS_ENEMY_TANK_H
 
+#include <memory.h>
+
 #include "bn_core.h"
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
@@ -24,7 +26,7 @@ namespace mks
         
         void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
-        void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
+        void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
 
     protected:
         bn::fixed initial_facing_angle;

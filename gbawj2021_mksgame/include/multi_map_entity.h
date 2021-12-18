@@ -27,10 +27,10 @@ namespace mks
         void set_sprite(int index, bn::optional<bn::sprite_ptr> new_sprite);
         bn::optional<bn::sprite_ptr> get_sprite(int index);
 
-        void set_map_position(int index, bn::fixed_point new_map_position);
+        void set_map_position(int index, bn::fixed_point& new_map_position);
         bn::fixed_point get_map_position(int index);
 
-        void set_map_angle(int index, bn::fixed new_map_angle);
+        void set_map_angle(int index, bn::fixed& new_map_angle);
         bn::fixed get_map_angle(int index);
 
         void set_z_order(int index, int order);

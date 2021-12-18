@@ -24,7 +24,7 @@ namespace mks
         enemy_helis.clear();
     }
 
-    void EnemyHelicopterHandler::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyHelicopterHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool EnemyHelicopterHandler::spawn_enemy_helicopter(bn::fixed_point map_position, bn::fixed map_angle)
+    bool EnemyHelicopterHandler::spawn_enemy_helicopter(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {

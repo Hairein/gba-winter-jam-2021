@@ -1,6 +1,8 @@
 #ifndef MKS_GAME_H
 #define MKS_GAME_H
 
+#include <memory>
+
 #include "bn_core.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
@@ -39,21 +41,21 @@ namespace mks
         bn::fixed get_map_yaw();
 
     protected:
-        VectorHelper vector_helper;
-        bn::random random;
+        std::unique_ptr<VectorHelper> vector_helper;
+        std::unique_ptr<bn::random> random;
 
-        EnemyTurretHandler* enemy_turret_handler;
-        EnemyTankHandler* enemy_tank_handler;
-        EnemyHelicopterHandler* enemy_helicopter_handler;
-        PowCageHandler* pow_cage_handler;
-        PowHandler* pow_handler;
-        ExplosionHandler* explosion_handler;
-        CraterHandler* crater_handler;
+        std::unique_ptr<EnemyTurretHandler> enemy_turret_handler;
+        std::unique_ptr<EnemyTankHandler> enemy_tank_handler;
+        std::unique_ptr<EnemyHelicopterHandler> enemy_helicopter_handler;
+        std::unique_ptr<PowCageHandler> pow_cage_handler;
+        std::unique_ptr<PowHandler> pow_handler;
+        std::unique_ptr<ExplosionHandler> explosion_handler;
+        std::unique_ptr<CraterHandler> crater_handler;
 
-        Compass* compass;
-        HealthDisplay* health_display;
-        PowsLeftDisplay* pows_left_display;
-        PlayerHelicopter* player_helicopter;
+        std::unique_ptr<Compass> compass;
+        std::unique_ptr<HealthDisplay> health_display;
+        std::unique_ptr<PowsLeftDisplay> pows_left_display;
+        std::unique_ptr<PlayerHelicopter> player_helicopter;
 
         GameState next_game_state;
 

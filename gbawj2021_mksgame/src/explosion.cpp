@@ -26,7 +26,7 @@ namespace mks
         MapEntity::shutdown();
     }
 
-    void Explosion::update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void Explosion::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         MapEntity::update();
 
@@ -43,7 +43,7 @@ namespace mks
 
         bn::fixed_point new_sprite_position;
         bn::fixed new_sprite_rotation;
-        vector_helper.calculate_sprite_position_angle(map_center, map_yaw, position, angle, new_sprite_position, new_sprite_rotation);
+        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, position, angle, new_sprite_position, new_sprite_rotation);
 
         if(frame_hold_counter >= SHORT_FRAME_HOLD)
         {

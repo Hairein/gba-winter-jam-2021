@@ -1,6 +1,8 @@
 #ifndef MKS_ENEMY_TURRET_HANDLER_H
 #define MKS_ENEMY_TURRET_HANDLER_H
 
+#include <memory.h>
+
 #include "bn_core.h"
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
@@ -22,9 +24,9 @@ namespace mks
         
         void init();
         void shutdown();
-        void update(VectorHelper& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
+        void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
        
-        bool spawn_enemy_turret(bn::fixed_point map_position, bn::fixed map_angle);
+        bool spawn_enemy_turret(bn::fixed_point& map_position, bn::fixed& map_angle);
 
     protected:
         bn::vector<EnemyTurret,DEFAULT_SPRITE_VECTOR_SIZE> enemy_turrets;
