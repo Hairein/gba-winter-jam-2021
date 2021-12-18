@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "vector_helper.h"
 #include "explosion_handler.h"
+#include "crater_handler.h"
 #include "enemy_turret_handler.h"
 #include "enemy_tank_handler.h"
 #include "enemy_helicopter_handler.h"
@@ -17,6 +18,7 @@
 #include "pow_handler.h"
 #include "compass.h"
 #include "health_display.h"
+#include "pows_left_display.h"
 #include "player_helicopter.h"
 
 namespace mks
@@ -38,6 +40,7 @@ namespace mks
 
     protected:
         VectorHelper vector_helper;
+        bn::random random;
 
         EnemyTurretHandler enemy_turret_handler;
         EnemyTankHandler enemy_tank_handler;
@@ -45,9 +48,11 @@ namespace mks
         PowCageHandler pow_cage_handler;
         PowHandler pow_handler;
         ExplosionHandler explosion_handler;
+        CraterHandler crater_handler;
 
         Compass compass;
         HealthDisplay health_display;
+        PowsLeftDisplay pows_left_display;
         PlayerHelicopter player_helicopter;
 
         GameState next_game_state;
@@ -60,6 +65,7 @@ namespace mks
         uint16_t input_key_flags;
 
         bn::fixed player_health_percent;
+        int pows_left;
 
         void init_navigation();
         void update_input();

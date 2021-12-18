@@ -20,6 +20,7 @@ namespace mks
         ingame_center_offset = new_ingame_center_offset;
 
         player_health_percent = bn::fixed(100);
+        pows_left = 15; // TODO Determine nos pows to be rescued in map 
 
         init_navigation();
 
@@ -46,16 +47,10 @@ namespace mks
         }
 
         // TEST
-        if(bn::keypad::l_held())
-        {
-            player_health_percent -= bn::fixed(1);
-            if(player_health_percent < bn::fixed(0)) player_health_percent = bn::fixed(0);
-        }
-        else if(bn::keypad::r_held())
-        {
-            player_health_percent += bn::fixed(1);
-            if(player_health_percent > bn::fixed(100)) player_health_percent = bn::fixed(100);
-        }
+        // if(bn::keypad::r_released())
+        // {
+        //     crater_handler.spawn(random, bn::fixed_point(map_center.x() - bn::fixed(40), map_center.y() - bn::fixed(40)));
+        // }
 
         update_navigation();
 
@@ -155,10 +150,7 @@ namespace mks
         pow_cage_handler.init();        
         pow_handler.init();
         explosion_handler.init();
-
-        // TEST
-        enemy_turret_handler.spawn_enemy_turret(bn::fixed_point(40, -120), bn::fixed(180));   
-        enemy_tank_handler.spawn_enemy_tank(bn::fixed_point(-40, -160), bn::fixed(180));   
+        crater_handler.init();
     }
 
     void Ingame::update_map()
@@ -172,6 +164,7 @@ namespace mks
         pow_cage_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         pow_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
+        crater_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
     void Ingame::shutdown_map()
@@ -182,6 +175,7 @@ namespace mks
         pow_cage_handler.shutdown();
         pow_handler.shutdown();
         explosion_handler.shutdown();
+        crater_handler.shutdown();
     }
 
     void Ingame::init_ui()
@@ -189,6 +183,7 @@ namespace mks
         player_helicopter.init();
         compass.init();
         health_display.init(player_health_percent);
+        pows_left_display.init(pows_left);
     }
 
     void Ingame::update_ui()
@@ -196,6 +191,7 @@ namespace mks
         player_helicopter.update(input_key_flags, ingame_center_offset);
         compass.update(map_yaw);
         health_display.update(player_health_percent);
+        pows_left_display.update(pows_left);
    }
 
     void Ingame::shutdown_ui()
@@ -203,5 +199,6 @@ namespace mks
         player_helicopter.shutdown();
         compass.shutdown();
         health_display.shutdown();
+        pows_left_display.shutdown();
     }
 }
