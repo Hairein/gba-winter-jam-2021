@@ -50,10 +50,10 @@ namespace mks
         ExplosionHandler* explosion_handler;
         CraterHandler* crater_handler;
 
-        Compass compass;
-        HealthDisplay health_display;
-        PowsLeftDisplay pows_left_display;
-        PlayerHelicopter player_helicopter;
+        Compass* compass;
+        HealthDisplay* health_display;
+        PowsLeftDisplay* pows_left_display;
+        PlayerHelicopter* player_helicopter;
 
         GameState next_game_state;
 

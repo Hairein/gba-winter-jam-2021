@@ -206,25 +206,39 @@ namespace mks
 
     void Ingame::init_ui()
     {
-        player_helicopter.init();
-        compass.init();
-        health_display.init(player_health_percent);
-        pows_left_display.init(pows_left);
+        player_helicopter = new PlayerHelicopter();
+        player_helicopter->init();
+
+        compass = new Compass();
+        compass->init();
+
+        health_display = new HealthDisplay();
+        health_display->init(player_health_percent);
+
+        pows_left_display = new PowsLeftDisplay();
+        pows_left_display->init(pows_left);
     }
 
     void Ingame::update_ui()
     {
-        player_helicopter.update(input_key_flags, ingame_center_offset);
-        compass.update(map_yaw);
-        health_display.update(player_health_percent);
-        pows_left_display.update(pows_left);
+        player_helicopter->update(input_key_flags, ingame_center_offset);
+        compass->update(map_yaw);
+        health_display->update(player_health_percent);
+        pows_left_display->update(pows_left);
    }
 
     void Ingame::shutdown_ui()
     {
-        player_helicopter.shutdown();
-        compass.shutdown();
-        health_display.shutdown();
-        pows_left_display.shutdown();
+        player_helicopter->shutdown();
+        delete player_helicopter;
+        
+        compass->shutdown();
+        delete compass;
+
+        health_display->shutdown();
+        delete health_display;
+
+        pows_left_display->shutdown();
+        delete pows_left_display;
     }
 }
