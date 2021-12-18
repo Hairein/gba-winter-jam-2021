@@ -144,13 +144,26 @@ namespace mks
 
     void Ingame::init_map()
     {
-        enemy_turret_handler.init();    
-        enemy_tank_handler.init();
-        enemy_helicopter_handler.init();
-        pow_cage_handler.init();        
-        pow_handler.init();
-        explosion_handler.init();
-        crater_handler.init();
+        enemy_turret_handler = new EnemyTurretHandler();
+        enemy_turret_handler->init(); 
+
+        enemy_tank_handler = new EnemyTankHandler();
+        enemy_tank_handler->init();
+
+        enemy_helicopter_handler = new EnemyHelicopterHandler();
+        enemy_helicopter_handler->init();
+
+        pow_cage_handler = new PowCageHandler();
+        pow_cage_handler->init();        
+
+        pow_handler = new PowHandler();
+        pow_handler->init();
+
+        explosion_handler = new ExplosionHandler();
+        explosion_handler->init();
+
+        crater_handler = new CraterHandler();
+        crater_handler->init();
     }
 
     void Ingame::update_map()
@@ -158,24 +171,37 @@ namespace mks
         auto rotated_ingame_center_offset = vector_helper.rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
-        enemy_turret_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
-        enemy_tank_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
-        enemy_helicopter_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
-        pow_cage_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
-        pow_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
-        explosion_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
-        crater_handler.update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_turret_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_tank_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_helicopter_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        pow_cage_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        pow_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        explosion_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        crater_handler->update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
     void Ingame::shutdown_map()
     {
-        enemy_turret_handler.shutdown();
-        enemy_tank_handler.shutdown();
-        enemy_helicopter_handler.shutdown();
-        pow_cage_handler.shutdown();
-        pow_handler.shutdown();
-        explosion_handler.shutdown();
-        crater_handler.shutdown();
+        enemy_turret_handler->shutdown();
+        delete enemy_turret_handler;
+
+        enemy_tank_handler->shutdown();
+        delete enemy_tank_handler;
+
+        enemy_helicopter_handler->shutdown();
+        delete enemy_helicopter_handler;
+
+        pow_cage_handler->shutdown();
+        delete pow_cage_handler;
+
+        pow_handler->shutdown();
+        delete pow_handler;
+
+        explosion_handler->shutdown();
+        delete explosion_handler;
+
+        crater_handler->shutdown();
+        delete crater_handler;
     }
 
     void Ingame::init_ui()

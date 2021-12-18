@@ -42,13 +42,13 @@ namespace mks
         VectorHelper vector_helper;
         bn::random random;
 
-        EnemyTurretHandler enemy_turret_handler;
-        EnemyTankHandler enemy_tank_handler;
-        EnemyHelicopterHandler enemy_helicopter_handler;
-        PowCageHandler pow_cage_handler;
-        PowHandler pow_handler;
-        ExplosionHandler explosion_handler;
-        CraterHandler crater_handler;
+        EnemyTurretHandler* enemy_turret_handler;
+        EnemyTankHandler* enemy_tank_handler;
+        EnemyHelicopterHandler* enemy_helicopter_handler;
+        PowCageHandler* pow_cage_handler;
+        PowHandler* pow_handler;
+        ExplosionHandler* explosion_handler;
+        CraterHandler* crater_handler;
 
         Compass compass;
         HealthDisplay health_display;
