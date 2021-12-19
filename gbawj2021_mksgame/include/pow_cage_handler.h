@@ -24,7 +24,7 @@ namespace mks
         void shutdown();
         void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
        
-        bool spawn_pow_cage(bn::fixed_point& map_position, bn::fixed& map_angle);
+        bool spawn(bn::fixed_point& map_position, bn::fixed& map_angle);
 
     protected:
         bn::vector<PowCage,DEFAULT_SPRITE_VECTOR_SIZE> pow_cages;

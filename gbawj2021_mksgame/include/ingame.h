@@ -10,19 +10,26 @@
 #include "bn_sprite_ptr.h"
 
 #include "globals.h"
+
 #include "vector_helper.h"
+#include "map_helper.h"
+
 #include "explosion_handler.h"
 #include "crater_handler.h"
+
 #include "enemy_turret_handler.h"
 #include "enemy_tank_handler.h"
 #include "enemy_helicopter_handler.h"
+
 #include "pow_cage_handler.h"
 #include "pow_handler.h"
+
 #include "compass.h"
 #include "health_display.h"
 #include "pows_left_display.h"
-#include "player_helicopter.h"
 #include "rtb_message_display.h"
+
+#include "player_helicopter.h"
 
 namespace mks
 {
@@ -71,6 +78,9 @@ namespace mks
         bn::fixed player_health_percent;
         int pows_initial;
         int pows_left;
+        
+        void init_gameplay();
+        void spawn_entities(MapHelper& map_helper);
         
         void init_navigation();
         void update_input();

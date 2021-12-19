@@ -15,22 +15,19 @@ namespace mks
 
     void Ingame::init(bn::fixed_point& new_ingame_center_offset)
     {
+        vector_helper.reset(new VectorHelper());
+        random.reset(new bn::random());
+
         next_game_state = GameState::GAMESTATE_NONE;
 
         ingame_center_offset = new_ingame_center_offset;
-
-        player_health_percent = bn::fixed(100);
-        
-        pows_initial = 15;// TODO Determine nos pows to be rescued in map 
-        pows_left = pows_initial; 
-
-        vector_helper.reset(new VectorHelper());
-        random.reset(new bn::random());
 
         init_navigation();
 
         init_ui();
         init_map();
+
+        init_gameplay();
     }
 
     void Ingame::shutdown()
@@ -53,12 +50,6 @@ namespace mks
             next_game_state = GameState::GAMESTATE_TITLE;
             return;
         }
-
-        // TEST
-        // if(bn::keypad::r_released())
-        // {
-        //     crater_handler.spawn(random, bn::fixed_point(map_center.x() - bn::fixed(40), map_center.y() - bn::fixed(40)));
-        // }
 
         update_navigation();
 
@@ -97,10 +88,69 @@ namespace mks
         if(bn::keypad::l_held()) input_key_flags |= INPUT_L;   
     }
 
-    void Ingame::init_navigation()
+    void Ingame::init_gameplay()
     {
-        map_center.set_x(0);
-        map_center.set_y(0);
+        player_health_percent = bn::fixed(100);
+
+        MapHelper map_helper;
+     
+        map_helper.count_map_tiles(MAPTYPE_POW_CAGE, pows_initial);
+        pows_left = pows_initial; 
+
+        spawn_entities(map_helper);
+    }
+
+    void Ingame::spawn_entities(MapHelper& map_helper)
+    {
+        bn::fixed map_angle_0(bn::fixed(0));
+        bn::fixed map_angle_90(bn::fixed(90));
+        bn::fixed map_angle_180(bn::fixed(180));
+        bn::fixed map_angle_270(bn::fixed(270));
+        
+        for(int y = 0; y < MAP_TILES_Y; y++)
+        {
+            for(int x = 0; x < MAP_TILES_X; x++)
+            {
+                bn::fixed pos_x = (x * MAP_TILE_SIZE_X) - MAP_PIXEL_HALFSIZE_X;
+                bn::fixed pos_y = (y * MAP_TILE_SIZE_Y) - MAP_PIXEL_HALFSIZE_Y;                
+                bn::fixed_point map_position{pos_x, pos_y};
+
+                int tile_index;
+                map_helper.get_map_tile(x, y, tile_index);
+                switch(tile_index)
+                {
+                    case MAPTYPE_POW_CAGE: { pow_cage_handler.get()->spawn(map_position, map_angle_0); } break;
+                    case MAPTYPE_TURRET_180_STATIC: { enemy_turret_handler.get()->spawn(map_position, map_angle_180); } break;
+                    case MAPTYPE_TURRET_270_STATIC: { enemy_turret_handler.get()->spawn(map_position, map_angle_270); } break;
+                    case MAPTYPE_TURRET_0_STATIC: { enemy_turret_handler.get()->spawn(map_position, map_angle_0); } break;
+                    case MAPTYPE_TURRET_90_STATIC: { enemy_turret_handler.get()->spawn(map_position, map_angle_90); } break;
+                    case MAPTYPE_TANK_180_STATIC: { enemy_tank_handler.get()->spawn(map_position, map_angle_180); } break;
+                    case MAPTYPE_TANK_270_STATIC: { enemy_tank_handler.get()->spawn(map_position, map_angle_270); } break;
+                    case MAPTYPE_TANK_0_STATIC: { enemy_tank_handler.get()->spawn(map_position, map_angle_0); } break;
+                    case MAPTYPE_TANK_90_STATIC: { enemy_tank_handler.get()->spawn(map_position, map_angle_90); } break;
+                    case MAPTYPE_HELICOPTER_180_STATIC: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_180); } break;
+                    case MAPTYPE_HELICOPTER_270_STATIC: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_270); } break;
+                    case MAPTYPE_HELICOPTER_0_STATIC: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_0); } break;
+                    case MAPTYPE_HELICOPTER_90_STATIC: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_90); } break;
+                    case MAPTYPE_TANK_180_MOBILE: { enemy_tank_handler.get()->spawn(map_position, map_angle_180); } break;
+                    case MAPTYPE_TANK_270_MOBILE: { enemy_tank_handler.get()->spawn(map_position, map_angle_270); } break;
+                    case MAPTYPE_TANK_0_MOBILE: { enemy_tank_handler.get()->spawn(map_position, map_angle_0); } break;
+                    case MAPTYPE_TANK_90_MOBILE: { enemy_tank_handler.get()->spawn(map_position, map_angle_90); } break;
+                    case MAPTYPE_HELICOPTER_180_MOBILE: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_180); } break;
+                    case MAPTYPE_HELICOPTER_270_MOBILE: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_270); } break;
+                    case MAPTYPE_HELICOPTER_0_MOBILE: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_0); } break;
+                    case MAPTYPE_HELICOPTER_90_MOBILE: { enemy_helicopter_handler.get()->spawn(map_position, map_angle_90); } break;
+                    default: break;
+                }
+            }
+        }
+    }
+
+    void Ingame::init_navigation()
+    {     
+        std::unique_ptr<MapHelper> map_helper(new MapHelper());
+        map_helper.get()->find_player_start_position(map_center);
+        
         map_yaw = 0;
     }
 

@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool EnemyHelicopterHandler::spawn_enemy_helicopter(bn::fixed_point& map_position, bn::fixed& map_angle)
+    bool EnemyHelicopterHandler::spawn(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {

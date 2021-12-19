@@ -53,8 +53,10 @@
             "scaleInEditor": 8
         }
     },
+    "last.exportedFilePath": "/home/mkoleoso/Data/GitHub/gba-winter-jam-2021/maps",
     "last.imagePath": "/home/mkoleoso/Data/GitHub/gba-winter-jam-2021/maps",
     "map.height": 192,
+    "map.lastUsedExportFilter": "JavaScript-Kartendateien (*.js)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
     "map.tileWidth": 8,

@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool EnemyTankHandler::spawn_enemy_tank(bn::fixed_point& map_position, bn::fixed& map_angle)
+    bool EnemyTankHandler::spawn(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {

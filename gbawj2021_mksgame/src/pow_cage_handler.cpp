@@ -35,7 +35,7 @@ namespace mks
         }
     }
 
-    bool PowCageHandler::spawn_pow_cage(bn::fixed_point& map_position, bn::fixed& map_angle)
+    bool PowCageHandler::spawn(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
