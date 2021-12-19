@@ -2,6 +2,7 @@
 #define MKS_POW_HANDLER_H
 
 #include <memory.h>
+#include <vector>
 
 #include "bn_core.h"
 #include "bn_optional.h"
@@ -29,7 +30,7 @@ namespace mks
         bool spawn(bn::fixed_point& map_position, bn::fixed& map_angle);
 
     protected:
-        bn::vector<Pow,DEFAULT_SPRITE_VECTOR_SIZE> pows;
+        std::vector<Pow> pows;
     };
 }
 

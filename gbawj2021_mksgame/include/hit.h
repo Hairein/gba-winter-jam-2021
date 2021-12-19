@@ -1,8 +1,7 @@
-#ifndef MKS_CRATER_HANDLER_H
-#define MKS_CRATER_HANDLER_H
+#ifndef MKS_HIT_H
+#define MKS_HIT_H
 
 #include <memory.h>
-#include <vector>
 
 #include "bn_core.h"
 #include "bn_optional.h"
@@ -11,26 +10,27 @@
 #include "bn_fixed_point.h"
 #include "bn_vector.h"
 
+#include "bn_sprite_items_hit_sequence.h"
+
 #include "globals.h"
-#include "crater.h"
+#include "map_entity.h"
 #include "vector_helper.h"
 
 namespace mks
 {
-    class CraterHandler
+    class Hit : public MapEntity
     {
     public: 
-        CraterHandler();
-        ~CraterHandler();
+        Hit();
+        ~Hit();
         
-        void init();
+        void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
         void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
-       
-        bool spawn(std::unique_ptr<bn::random>& random, bn::fixed_point& map_position);
 
     protected:
-        std::vector<Crater> craters;
+        int sprite_index;
+        int frame_hold_counter;
     };
 }
 

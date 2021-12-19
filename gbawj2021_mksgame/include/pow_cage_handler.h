@@ -1,6 +1,8 @@
 #ifndef MKS_POW_CAGE_HANDLER_H
 #define MKS_POW_CAGE_HANDLER_H
 
+#include <vector>
+
 #include "bn_core.h"
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
@@ -27,7 +29,7 @@ namespace mks
         bool spawn(bn::fixed_point& map_position, bn::fixed& map_angle);
 
     protected:
-        bn::vector<PowCage,DEFAULT_SPRITE_VECTOR_SIZE> pow_cages;
+        std::vector<PowCage> pow_cages;
     };
 }
 

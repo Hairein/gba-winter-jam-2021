@@ -15,7 +15,7 @@ namespace mks
     {   
         UiElement::init(); 
 
-        flash_counter = FLASH_COUNTER_AMX;   
+        flash_counter = FLASH_COUNTER_MAX;   
         show_message = false;
     }
 
@@ -29,7 +29,7 @@ namespace mks
         UiElement::update(); 
 
         flash_counter++;
-        if(flash_counter >= FLASH_COUNTER_AMX)
+        if(flash_counter >= FLASH_COUNTER_MAX)
         {
             flash_counter = 0;
 

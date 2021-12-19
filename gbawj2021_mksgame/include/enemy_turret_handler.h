@@ -2,6 +2,7 @@
 #define MKS_ENEMY_TURRET_HANDLER_H
 
 #include <memory.h>
+#include <vector>
 
 #include "bn_core.h"
 #include "bn_optional.h"
@@ -29,7 +30,7 @@ namespace mks
         bool spawn(bn::fixed_point& map_position, bn::fixed& map_angle);
 
     protected:
-        bn::vector<EnemyTurret,DEFAULT_SPRITE_VECTOR_SIZE> enemy_turrets;
+        std::vector<EnemyTurret> enemy_turrets;
     };
 }
 

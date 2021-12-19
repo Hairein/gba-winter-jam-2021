@@ -15,6 +15,7 @@
 #include "map_helper.h"
 
 #include "explosion_handler.h"
+#include "hit_handler.h"
 #include "crater_handler.h"
 
 #include "enemy_turret_handler.h"
@@ -44,7 +45,6 @@ namespace mks
         void update();
 
         GameState change_game_state();
-
         bn::fixed_point get_map_position();
         bn::fixed get_map_yaw();
 
@@ -58,6 +58,7 @@ namespace mks
         std::unique_ptr<PowCageHandler> pow_cage_handler;
         std::unique_ptr<PowHandler> pow_handler;
         std::unique_ptr<ExplosionHandler> explosion_handler;
+        std::unique_ptr<HitHandler> hit_handler;
         std::unique_ptr<CraterHandler> crater_handler;
 
         std::unique_ptr<Compass> compass;

@@ -148,8 +148,8 @@ namespace mks
 
     void Ingame::init_navigation()
     {     
-        std::unique_ptr<MapHelper> map_helper(new MapHelper());
-        map_helper.get()->find_player_start_position(map_center);
+        MapHelper map_helper;
+        map_helper.find_player_start_position(map_center);
         
         map_yaw = 0;
     }
@@ -220,6 +220,9 @@ namespace mks
         explosion_handler.reset(new ExplosionHandler());
         explosion_handler.get()->init();
 
+        hit_handler.reset(new HitHandler());
+        hit_handler.get()->init();
+
         crater_handler.reset(new CraterHandler());
         crater_handler.get()->init();
     }
@@ -235,6 +238,7 @@ namespace mks
         pow_cage_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         pow_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        hit_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         crater_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
     }
     
@@ -257,6 +261,9 @@ namespace mks
 
         explosion_handler.get()->shutdown();
         explosion_handler.reset();
+
+        hit_handler.get()->shutdown();
+        hit_handler.reset();
 
         crater_handler.get()->shutdown();
         crater_handler.reset();

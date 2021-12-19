@@ -1,16 +1,16 @@
-#include "explosion.h"
+#include "hit.h"
 
 namespace mks
 {
-    Explosion::Explosion()
+    Hit::Hit()
     {
     }
 
-    Explosion::~Explosion()
+    Hit::~Hit()
     {
     }
         
-    void Explosion::init(bn::fixed_point& new_position, bn::fixed& new_angle)
+    void Hit::init(bn::fixed_point& new_position, bn::fixed& new_angle)
     {
         MapEntity::init();
 
@@ -21,12 +21,12 @@ namespace mks
         angle = new_angle;
     }
 
-    void Explosion::shutdown()
+    void Hit::shutdown()
     {
         MapEntity::shutdown();
     }
 
-    void Explosion::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void Hit::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
         MapEntity::update();
 
@@ -35,7 +35,7 @@ namespace mks
             return;
         }
 
-        if(sprite_index >= EXPLOSION_SEQUENCE_MAX)
+        if(sprite_index >= HIT_SEQUENCE_MAX)
         {
             shutdown();
             return;
@@ -47,7 +47,7 @@ namespace mks
 
         if(frame_hold_counter >= SHORT_FRAME_HOLD)
         {
-            set_sprite(bn::sprite_items::explosion_sequence1.create_sprite_optional(new_sprite_position.x(),new_sprite_position.y(),sprite_index));
+            set_sprite(bn::sprite_items::hit_sequence.create_sprite_optional(new_sprite_position.x(),new_sprite_position.y(),sprite_index));
             sprite.get()->set_z_order(2);
             sprite.get()->set_rotation_angle(new_sprite_rotation);
 
