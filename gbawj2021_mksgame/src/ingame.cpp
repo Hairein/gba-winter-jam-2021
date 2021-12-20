@@ -15,7 +15,10 @@ namespace mks
 
     void Ingame::init(bn::fixed_point& new_ingame_center_offset)
     {
+        log_memory("start Ingame::init");
+
         vector_helper.reset(new VectorHelper());
+        map_helper.reset(new MapHelper());
         random.reset(new bn::random());
 
         next_game_state = GameState::GAMESTATE_NONE;
@@ -28,6 +31,8 @@ namespace mks
         init_map();
 
         init_gameplay();
+
+        log_memory("end Ingame::init");
     }
 
     void Ingame::shutdown()
@@ -55,6 +60,19 @@ namespace mks
 
         update_ui();
         update_map();
+    }
+
+    void Ingame::log_memory(std::string msg)
+    {
+        BN_LOG("+++", msg.c_str());
+        BN_LOG("used_alloc_ewram:",bn::memory::used_alloc_ewram());
+        BN_LOG("available_alloc_ewram:",bn::memory::available_alloc_ewram());
+        BN_LOG("used_items_ewram:",bn::memory::used_items_ewram());
+        BN_LOG("available_items_ewram:",bn::memory::available_items_ewram());
+        BN_LOG("used_stack_iwram:",bn::memory::used_stack_iwram());
+        BN_LOG("used_static_iwram:",bn::memory::used_static_iwram());
+        BN_LOG("used_static_ewram:",bn::memory::used_static_ewram());
+        BN_LOG("---", msg.c_str());
     }
 
     bn::fixed_point Ingame::get_map_position()
@@ -91,16 +109,14 @@ namespace mks
     void Ingame::init_gameplay()
     {
         player_health_percent = bn::fixed(100);
-
-        MapHelper map_helper;
      
-        map_helper.count_map_tiles(MAPTYPE_POW_CAGE, pows_initial);
+        map_helper.get()->count_map_tiles(MAPTYPE_POW_CAGE, pows_initial);
         pows_left = pows_initial; 
 
-        spawn_entities(map_helper);
+        spawn_entities();
     }
 
-    void Ingame::spawn_entities(MapHelper& map_helper)
+    void Ingame::spawn_entities()
     {
         bn::fixed map_angle_0(bn::fixed(0));
         bn::fixed map_angle_90(bn::fixed(90));
@@ -116,7 +132,7 @@ namespace mks
                 bn::fixed_point map_position{pos_x, pos_y};
 
                 int tile_index;
-                map_helper.get_map_tile(x, y, tile_index);
+                map_helper.get()->get_map_tile(x, y, tile_index);
                 switch(tile_index)
                 {
                     case MAPTYPE_POW_CAGE: { pow_cage_handler.get()->spawn(map_position, map_angle_0); } break;
@@ -148,8 +164,7 @@ namespace mks
 
     void Ingame::init_navigation()
     {     
-        MapHelper map_helper;
-        map_helper.find_player_start_position(map_center);
+        map_helper.get()->find_player_start_position(map_center);
         
         map_yaw = 0;
     }

@@ -2,12 +2,14 @@
 #define MKS_GAME_H
 
 #include <memory>
+#include <string>
 
 #include "bn_core.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
+#include "bn_memory.h"
 
 #include "globals.h"
 
@@ -50,6 +52,7 @@ namespace mks
 
     protected:
         std::unique_ptr<VectorHelper> vector_helper;
+        std::unique_ptr<MapHelper> map_helper;
         std::unique_ptr<bn::random> random;
 
         std::unique_ptr<EnemyTurretHandler> enemy_turret_handler;
@@ -80,8 +83,10 @@ namespace mks
         int pows_initial;
         int pows_left;
         
+        void log_memory(std::string msg);
+
         void init_gameplay();
-        void spawn_entities(MapHelper& map_helper);
+        void spawn_entities();
         
         void init_navigation();
         void update_input();
