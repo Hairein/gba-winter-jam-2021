@@ -15,7 +15,7 @@ namespace mks
     class MultiMapEntity
     {
     public: 
-        MultiMapEntity(int size);
+        MultiMapEntity(size_t size);
         ~MultiMapEntity();
         
         void init();

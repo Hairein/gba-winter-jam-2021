@@ -37,8 +37,8 @@ namespace mks
             x += MAP_TILE_HALFSIZE_X;
             y += MAP_TILE_HALFSIZE_Y;
 
-            x -= MAP_PIXEL_HALFSIZE_X;
-            y -= MAP_PIXEL_HALFSIZE_Y;
+            x -= MAP_HALFSIZE_X;
+            y -= MAP_HALFSIZE_Y;
             
             map_position.set_x(bn::fixed(x));
             map_position.set_y(bn::fixed(y));
@@ -50,6 +50,17 @@ namespace mks
     void MapHelper::get_map_tile(int tile_x, int tile_y, int& found_tile)
     {
         found_tile = map_tiles[(tile_y * MAP_TILES_Y) + tile_x];
+    }
+
+    void MapHelper::get_map_tile_from_map_position(int pixel_x, int pixel_y, int& found_tile)
+    {
+        auto new_x = pixel_x + MAP_HALFSIZE_X;
+        new_x /= MAP_TILE_SIZE_X;
+
+        auto new_y = pixel_y + MAP_HALFSIZE_Y;
+        new_y /= MAP_TILE_SIZE_Y;
+        
+        get_map_tile(new_x, new_y, found_tile);
     }
 
     void MapHelper::count_map_tiles(int tile_type, int& nos)

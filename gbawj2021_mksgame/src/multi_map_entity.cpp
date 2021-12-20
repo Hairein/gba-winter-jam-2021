@@ -2,11 +2,11 @@
 
 namespace mks
 {
-    MultiMapEntity::MultiMapEntity(int size)
+    MultiMapEntity::MultiMapEntity(size_t size)
     {
         active = false;
 
-        for(int index = 0; index < size; index++)
+        for(size_t index = 0; index < size; index++)
         {
             bn::optional<bn::sprite_ptr> new_sprite;
             sprites.push_back(new_sprite);

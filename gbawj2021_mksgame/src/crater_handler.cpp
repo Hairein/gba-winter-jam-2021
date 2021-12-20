@@ -26,7 +26,7 @@ namespace mks
 
     void CraterHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
-        for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
+        for(size_t index = 0; index < craters.size(); index++)
         {
             if(craters[index].is_active())
             {
@@ -37,8 +37,8 @@ namespace mks
 
     bool CraterHandler::spawn(std::unique_ptr<bn::random>& random, bn::fixed_point& map_position)
     {
-        for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
-        {
+        for(size_t index = 0; index < craters.size(); index++)
+         {
             if(!craters[index].is_active())
             {
                 craters[index].init(random, map_position);

@@ -25,6 +25,8 @@ namespace mks
 
         ingame_center_offset = new_ingame_center_offset;
 
+        enable_player_input = true; // TODO - Block for intro sequence?
+
         init_navigation();
 
         init_ui();
@@ -50,10 +52,19 @@ namespace mks
     {
         update_input();
 
-        if(input_key_flags & INPUT_START)
+        if(input_key_flags & INPUT_START || end_mission)
         {
+            wait_for_no_input();
+            
             next_game_state = GameState::GAMESTATE_TITLE;
             return;
+        }
+
+        // TEST 
+        if(bn::keypad::l_released())
+        {
+            BN_LOG("Resetting pows_left");
+            pows_left = 0;
         }
 
         update_navigation();
@@ -106,8 +117,20 @@ namespace mks
         if(bn::keypad::l_held()) input_key_flags |= INPUT_L;   
     }
 
+    void Ingame::wait_for_no_input()
+    {
+        do
+        {
+            bn::core::update();
+
+            update_input();
+        } while (input_key_flags != 0x0000);
+    }
+
     void Ingame::init_gameplay()
     {
+        end_mission = false;
+
         player_health_percent = bn::fixed(100);
      
         map_helper.get()->count_map_tiles(MAPTYPE_POW_CAGE, pows_initial);
@@ -127,8 +150,8 @@ namespace mks
         {
             for(int x = 0; x < MAP_TILES_X; x++)
             {
-                bn::fixed pos_x = (x * MAP_TILE_SIZE_X) - MAP_PIXEL_HALFSIZE_X;
-                bn::fixed pos_y = (y * MAP_TILE_SIZE_Y) - MAP_PIXEL_HALFSIZE_Y;                
+                bn::fixed pos_x = (x * MAP_TILE_SIZE_X) - MAP_HALFSIZE_X;
+                bn::fixed pos_y = (y * MAP_TILE_SIZE_Y) - MAP_HALFSIZE_Y;                
                 bn::fixed_point map_position{pos_x, pos_y};
 
                 int tile_index;
@@ -255,6 +278,18 @@ namespace mks
         explosion_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         hit_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         crater_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+
+        // Check for ending mission
+        if(pows_left == 0)
+        {
+            int found_tile;
+            map_helper.get()->get_map_tile_from_map_position(map_center.x().floor_integer(), map_center.y().floor_integer(), found_tile);
+
+            if(found_tile == MAPTYPE_HOME_PLATE)
+            {
+                end_mission = true;
+            }
+        }
     }
     
     void Ingame::shutdown_map()

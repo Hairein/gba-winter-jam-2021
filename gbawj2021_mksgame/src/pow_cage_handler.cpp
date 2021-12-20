@@ -26,7 +26,7 @@ namespace mks
 
     void PowCageHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
     {
-        for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
+        for(size_t index = 0; index < pow_cages.size(); index++)
         {
             if(pow_cages[index].is_active())
             {
@@ -37,7 +37,7 @@ namespace mks
 
     bool PowCageHandler::spawn(bn::fixed_point& map_position, bn::fixed& map_angle)
     {
-        for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
+        for(size_t index = 0; index < pow_cages.size(); index++)
         {
             if(!pow_cages[index].is_active())
             {

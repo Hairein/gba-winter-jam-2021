@@ -79,6 +79,9 @@ namespace mks
 
         uint16_t input_key_flags;
 
+        bool end_mission;
+        bool enable_player_input;
+
         bn::fixed player_health_percent;
         int pows_initial;
         int pows_left;
@@ -90,6 +93,7 @@ namespace mks
         
         void init_navigation();
         void update_input();
+        void wait_for_no_input();
         void update_navigation();
         void shutdown_navigation();
 

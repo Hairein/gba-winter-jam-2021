@@ -15,7 +15,7 @@ namespace mks
     class MultiUiElement
     {
     public: 
-        MultiUiElement(int size);
+        MultiUiElement(size_t size);
         ~MultiUiElement();
         
         void init();
