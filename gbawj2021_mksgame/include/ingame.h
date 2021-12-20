@@ -19,6 +19,7 @@
 #include "explosion_handler.h"
 #include "hit_handler.h"
 #include "crater_handler.h"
+#include "player_shot_handler.h"
 
 #include "enemy_turret_handler.h"
 #include "enemy_tank_handler.h"
@@ -62,6 +63,7 @@ namespace mks
         std::unique_ptr<PowHandler> pow_handler;
         std::unique_ptr<ExplosionHandler> explosion_handler;
         std::unique_ptr<HitHandler> hit_handler;
+        std::unique_ptr<PlayerShotHandler> player_shot_handler;
         std::unique_ptr<CraterHandler> crater_handler;
 
         std::unique_ptr<Compass> compass;
@@ -81,6 +83,7 @@ namespace mks
 
         bool end_mission;
         bool enable_player_input;
+        int last_player_shot;
 
         bn::fixed player_health_percent;
         int pows_initial;

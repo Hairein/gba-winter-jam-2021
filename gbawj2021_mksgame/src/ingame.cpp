@@ -40,6 +40,7 @@ namespace mks
     void Ingame::shutdown()
     {
         vector_helper.reset();
+        map_helper.reset();
         random.reset();
 
         shutdown_navigation();
@@ -58,13 +59,6 @@ namespace mks
             
             next_game_state = GameState::GAMESTATE_TITLE;
             return;
-        }
-
-        // TEST 
-        if(bn::keypad::l_released())
-        {
-            BN_LOG("Resetting pows_left");
-            pows_left = 0;
         }
 
         update_navigation();
@@ -261,12 +255,29 @@ namespace mks
         hit_handler.reset(new HitHandler());
         hit_handler.get()->init();
 
+        player_shot_handler.reset(new PlayerShotHandler());
+        player_shot_handler.get()->init();
+
         crater_handler.reset(new CraterHandler());
         crater_handler.get()->init();
+
+        last_player_shot = PLAYER_SHOT_INTERVAL;
     }
 
     void Ingame::update_map()
     {
+        // Handle player shooting
+        if(input_key_flags & INPUT_R && last_player_shot >= PLAYER_SHOT_INTERVAL)
+        {
+            last_player_shot -= PLAYER_SHOT_INTERVAL;
+            
+            player_shot_handler.get()->spawn(map_center, map_yaw); 
+        }
+        else
+        {
+            if(last_player_shot < PLAYER_SHOT_INTERVAL) last_player_shot++;
+        }
+
         auto rotated_ingame_center_offset = vector_helper.get()->rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
@@ -277,6 +288,7 @@ namespace mks
         pow_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         explosion_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
         hit_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        player_shot_handler.get()->update(vector_helper, hit_handler, calculated_ingame_map_center, map_yaw);
         crater_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
 
         // Check for ending mission
@@ -314,6 +326,9 @@ namespace mks
 
         hit_handler.get()->shutdown();
         hit_handler.reset();
+
+        player_shot_handler.get()->shutdown();
+        player_shot_handler.reset();
 
         crater_handler.get()->shutdown();
         crater_handler.reset();
