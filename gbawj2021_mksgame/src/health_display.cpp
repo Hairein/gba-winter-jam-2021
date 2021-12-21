@@ -38,7 +38,6 @@ namespace mks
 
         if(last_health_value != ingame->get_player_health())
         {
-
             bn::fixed pip_offset = bn::fixed(-85) + ((ingame->get_player_health() * bn::fixed(30)) / bn::fixed(100));
             bn::fixed_point new_point(pip_offset, -71);
             set_position(1, new_point);
