@@ -1,24 +1,27 @@
+#include "ingame.h"
+
 #include "pows_left_display.h"
 
 namespace mks
 {
-    PowsLeftDisplay::PowsLeftDisplay()
+    PowsLeftDisplay::PowsLeftDisplay(Ingame* ingame_ptr)
         : MultiUiElement(3)
     {
+        ingame = ingame_ptr;
     }
 
     PowsLeftDisplay::~PowsLeftDisplay()
     {
     }
 
-    void PowsLeftDisplay::init(int pows_left)
+    void PowsLeftDisplay::init()
     {   
         MultiUiElement::init();  
 
         set_sprite(0, bn::sprite_items::pows_left_icon.create_sprite_optional(70,-71));
         set_z_order(0, 0);
 
-        update_pows_left_number(pows_left);
+        last_pows_left_value = -1;
     }
 
     void PowsLeftDisplay::shutdown()

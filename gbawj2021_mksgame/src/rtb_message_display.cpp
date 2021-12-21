@@ -1,9 +1,13 @@
+#include "ingame.h"
+
 #include "rtb_message_display.h"
 
 namespace mks
 {
-    RtbMessageDisplay::RtbMessageDisplay()
+    RtbMessageDisplay::RtbMessageDisplay(Ingame* ingame_ptr)
     {
+        ingame = ingame_ptr;
+
         active = false;
     }
 

@@ -289,7 +289,7 @@ namespace mks
     void Ingame::update_map()
     {
         // Handle player shooting
-        if(input_key_flags & INPUT_R && last_player_shot >= PLAYER_SHOT_INTERVAL)
+        if(input_key_flags & (INPUT_L | INPUT_R) && last_player_shot >= PLAYER_SHOT_INTERVAL)
         {
             last_player_shot -= PLAYER_SHOT_INTERVAL;
             
@@ -299,6 +299,7 @@ namespace mks
         {
             if(last_player_shot < PLAYER_SHOT_INTERVAL) last_player_shot++;
         }
+        
         auto rotated_ingame_center_offset = vector_helper.get()->rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
@@ -366,10 +367,10 @@ namespace mks
         health_display.reset(new HealthDisplay(this));
         health_display.get()->init();
 
-        pows_left_display.reset(new PowsLeftDisplay());
-        pows_left_display.get()->init(pows_left);
+        pows_left_display.reset(new PowsLeftDisplay(this));
+        pows_left_display.get()->init();
 
-        rtb_message_display.reset(new RtbMessageDisplay());
+        rtb_message_display.reset(new RtbMessageDisplay(this));
         rtb_message_display.get()->init();
     }
 

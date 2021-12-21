@@ -15,17 +15,21 @@
 
 namespace mks
 {
+    class Ingame;
+
     class PowsLeftDisplay : public MultiUiElement
     {
     public: 
-        PowsLeftDisplay();
+        PowsLeftDisplay(Ingame* ingame_ptr);
         ~PowsLeftDisplay();
         
-        void init(int player_health);
+        void init();
         void shutdown();
-        void update(int player_health);
+        void update(int pows_left);
     
     protected:
+        Ingame* ingame;
+
         int last_pows_left_value;
 
         void update_pows_left_number(int pows_left);

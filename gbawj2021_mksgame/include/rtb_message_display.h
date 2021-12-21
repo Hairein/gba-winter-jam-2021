@@ -14,10 +14,12 @@
 
 namespace mks
 {
+    class Ingame;
+
     class RtbMessageDisplay : public UiElement
     {
     public: 
-        RtbMessageDisplay();
+        RtbMessageDisplay(Ingame* ingame_ptr);
         ~RtbMessageDisplay();
         
         void init();
@@ -25,6 +27,8 @@ namespace mks
         void update(bool enable_show_message);
 
     protected:
+        Ingame* ingame;
+
         int flash_counter = 0;
         bool show_message;
     };
