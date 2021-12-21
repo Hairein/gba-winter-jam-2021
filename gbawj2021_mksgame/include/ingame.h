@@ -66,7 +66,7 @@ namespace mks
         PlayerShotHandler* get_player_shot_handler() {return player_shot_handler.get();};
         CraterHandler* get_crater_handler() {return crater_handler.get();};
 
-        bn::fixed& get_player_health() {return player_health_percent;};
+        bn::fixed& get_player_health() {return player_health;};
         uint16_t& get_input_key_flags() {return input_key_flags;};
         bn::fixed_point& get_ingame_center_offset() {return ingame_center_offset;};
         int& get_pows_left() { return pows_left;};
@@ -106,7 +106,7 @@ namespace mks
         bool enable_player_input;
         int last_player_shot;
 
-        bn::fixed player_health_percent;
+        bn::fixed player_health;
         int pows_initial;
         int pows_left;
         

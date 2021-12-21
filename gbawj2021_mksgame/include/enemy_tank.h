@@ -29,10 +29,13 @@ namespace mks
         void shutdown();
         void update(bn::fixed_point calculated_map_center);
 
+        void take_damage(bn::fixed damage);
+
     protected:
         Ingame* ingame;
 
         bn::fixed initial_facing_angle;
+        bn::fixed health;
     };
 }
 

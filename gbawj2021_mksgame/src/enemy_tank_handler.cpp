@@ -55,4 +55,18 @@ namespace mks
         return false;
     }
 
+    size_t EnemyTankHandler::count()
+    {
+        return enemy_tanks.size();
+    }
+
+    EnemyTank& EnemyTankHandler::get(size_t index)
+    {
+        return enemy_tanks[index];
+    }
+
+    void EnemyTankHandler::apply_damage(size_t index, bn::fixed damage)
+    {
+        enemy_tanks[index].take_damage(damage);
+    }
 }

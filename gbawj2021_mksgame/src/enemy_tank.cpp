@@ -1,5 +1,7 @@
 #include "vector_helper.h"
 #include "ingame.h"
+#include "explosion_handler.h"
+#include "crater_handler.h"
 
 #include "enemy_tank.h"
 
@@ -26,6 +28,8 @@ namespace mks
         angles[1] = new_angle;
 
         initial_facing_angle = new_angle;
+
+        health = TANK_MAX_HEALTH;
     }
 
     void EnemyTank::shutdown()
@@ -42,7 +46,16 @@ namespace mks
             return;
         }
 
-        // TODO Calculate turret gun rotation as needed
+        if(health <= bn::fixed(0))
+        {
+            ingame->get_explosion_handler()->spawn(positions[0], angles[0]);
+            ingame->get_crater_handler()->spawn(positions[0]);
+
+            shutdown();
+            return;
+        }
+
+        // TODO Calculate tank gun rotation as needed
 
         bn::fixed_point new_sprite_position[2];
         bn::fixed new_sprite_rotation[2];
@@ -56,5 +69,10 @@ namespace mks
         set_sprite(1, bn::sprite_items::enemy_tank_turret.create_sprite_optional(new_sprite_position[1].x(), new_sprite_position[1].y(), 0));
         sprites[1].get()->set_z_order(3);
         sprites[1].get()->set_rotation_angle(new_sprite_rotation[1]);
+    }
+
+    void EnemyTank::take_damage(bn::fixed damage)
+    {
+        health -= damage;
     }
 }

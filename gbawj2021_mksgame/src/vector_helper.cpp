@@ -782,4 +782,10 @@ namespace mks
         while(new_facing_angle >= 360) new_facing_angle -= 360;
         return new_facing_angle / 30;
     }
+
+    bn::fixed VectorHelper::get_distance(bn::fixed_point position1, bn::fixed_point position2)
+    {
+        auto offset = position2 - position1;
+        return bn::sqrt((offset.x() * offset.x()) + (offset.y() * offset.y()));
+    }   
 }

@@ -55,4 +55,18 @@ namespace mks
         return false;
     }
 
+    size_t EnemyHelicopterHandler::count()
+    {
+        return enemy_helis.size();
+    }
+
+    EnemyHelicopter& EnemyHelicopterHandler::get(size_t index)
+    {
+        return enemy_helis[index];
+    }
+
+    void EnemyHelicopterHandler::apply_damage(size_t index, bn::fixed damage)
+    {
+        enemy_helis[index].take_damage(damage);
+    }
 }

@@ -30,6 +30,10 @@ namespace mks
        
         bool spawn(bn::fixed_point& map_position, bn::fixed& map_angle);
 
+        size_t count();
+        EnemyTank& get(size_t index);
+        void apply_damage(size_t index, bn::fixed damage);
+
     protected:
         Ingame* ingame;
 

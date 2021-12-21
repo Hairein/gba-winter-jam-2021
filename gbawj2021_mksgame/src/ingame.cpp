@@ -147,7 +147,7 @@ namespace mks
     {
         end_mission = false;
 
-        player_health_percent = bn::fixed(100);
+        player_health = bn::fixed(100);
      
         map_helper.get()->count_map_tiles(MAPTYPE_POW_CAGE, pows_initial);
         pows_left = pows_initial; 
@@ -299,7 +299,7 @@ namespace mks
         {
             if(last_player_shot < PLAYER_SHOT_INTERVAL) last_player_shot++;
         }
-        
+
         auto rotated_ingame_center_offset = vector_helper.get()->rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 

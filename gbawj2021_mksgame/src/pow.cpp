@@ -39,8 +39,14 @@ namespace mks
             return;
         }
 
-        // TODO Check player helicopter pick-up to despawn
-        // ingame->decrement_pows_left();
+        // Check player helicopter pick-up to despawn
+        if(ingame->get_vector_helper()->get_distance(ingame->get_map_center(), position) <= POW_PICKUP_RADIUS)
+        {
+            ingame->decrement_pows_left();
+
+            shutdown();
+            return;
+        }
 
         bn::fixed_point new_sprite_position;
         bn::fixed new_sprite_rotation;

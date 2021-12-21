@@ -1,5 +1,6 @@
-#include "enemy_turret.h"
 #include "vector_helper.h"
+#include "ingame.h"
+#include "enemy_turret.h"
 
 #include "enemy_turret_handler.h"
 
@@ -55,4 +56,18 @@ namespace mks
         return false;
     }
 
+    size_t EnemyTurretHandler::count()
+    {
+        return enemy_turrets.size();
+    }
+
+    EnemyTurret& EnemyTurretHandler::get(size_t index)
+    {
+        return enemy_turrets[index];
+    }
+
+    void EnemyTurretHandler::apply_damage(size_t index, bn::fixed damage)
+    {
+        enemy_turrets[index].take_damage(damage);
+    }
 }

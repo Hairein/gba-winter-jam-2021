@@ -36,6 +36,9 @@ namespace mks
         int frame_hold_counter;
         
         int lifetime;
+
+        bool handle_hit_checks();
+        bool check_hit(bn::fixed_point target);
     };
 }
 

@@ -54,4 +54,19 @@ namespace mks
 
         return false;
     }
+
+    size_t PowCageHandler::count()
+    {
+        return pow_cages.size();
+    }
+
+    PowCage& PowCageHandler::get(size_t index)
+    {
+        return pow_cages[index];
+    }
+
+    void PowCageHandler::apply_damage(size_t index, bn::fixed damage)
+    {
+        pow_cages[index].take_damage(damage);
+    }
 }

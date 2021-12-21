@@ -1,5 +1,9 @@
+#include "bn_log.h"
+
 #include "vector_helper.h"
 #include "ingame.h"
+#include "explosion_handler.h"
+#include "crater_handler.h"
 
 #include "enemy_turret.h"
 
@@ -26,6 +30,8 @@ namespace mks
         angles[1] = new_angle;
 
         initial_facing_angle = new_angle;
+
+        health = TURRET_MAX_HEALTH;
     }
 
     void EnemyTurret::shutdown()
@@ -39,6 +45,15 @@ namespace mks
 
         if(!is_active())
         {
+            return;
+        }
+
+        if(health <= bn::fixed(0))
+        {
+            ingame->get_explosion_handler()->spawn(positions[0], angles[0]);
+            ingame->get_crater_handler()->spawn(positions[0]);
+
+            shutdown();
             return;
         }
 
@@ -56,5 +71,10 @@ namespace mks
         set_sprite(1, bn::sprite_items::enemy_turret1_gun.create_sprite_optional(new_sprite_position[1].x(), new_sprite_position[1].y(), 0));
         sprites[1].get()->set_z_order(3);
         sprites[1].get()->set_rotation_angle(new_sprite_rotation[1]);
+    }
+
+    void EnemyTurret::take_damage(bn::fixed damage)
+    {
+        health -= damage;
     }
 }
