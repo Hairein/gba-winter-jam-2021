@@ -1,9 +1,14 @@
+#include "ingame.h"
+#include "enemy_helicopter.h"
+#include "vector_helper.h"
+
 #include "enemy_helicopter_handler.h"
 
 namespace mks
 {
-    EnemyHelicopterHandler::EnemyHelicopterHandler()
+    EnemyHelicopterHandler::EnemyHelicopterHandler(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     EnemyHelicopterHandler::~EnemyHelicopterHandler()
@@ -14,7 +19,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            EnemyHelicopter new_enemy_heli;
+            EnemyHelicopter new_enemy_heli(ingame);
             enemy_helis.push_back(new_enemy_heli);
         }
     }
@@ -24,13 +29,13 @@ namespace mks
         enemy_helis.clear();
     }
 
-    void EnemyHelicopterHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyHelicopterHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < enemy_helis.size(); index++)
          {
             if(enemy_helis[index].is_active())
             {
-                enemy_helis[index].update(vector_helper, map_center, map_yaw);
+                enemy_helis[index].update(calculated_map_center);
             }
         }
     }

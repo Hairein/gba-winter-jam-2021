@@ -1,9 +1,14 @@
+#include "vector_helper.h"
+#include "ingame.h"
+#include "pow_cage.h"
+
 #include "pow_cage_handler.h"
 
 namespace mks
 {
-    PowCageHandler::PowCageHandler()
+    PowCageHandler::PowCageHandler(Ingame* ingame_ptr)
     {
+        ingame = ingame_ptr;
     }
 
     PowCageHandler::~PowCageHandler()
@@ -14,7 +19,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            PowCage new_pow_cage;
+            PowCage new_pow_cage(ingame);
             pow_cages.push_back(new_pow_cage);
         }
     }
@@ -24,13 +29,13 @@ namespace mks
         pow_cages.clear();
     }
 
-    void PowCageHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void PowCageHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < pow_cages.size(); index++)
         {
             if(pow_cages[index].is_active())
             {
-                pow_cages[index].update(vector_helper, map_center, map_yaw);
+                pow_cages[index].update(calculated_map_center);
             }
         }
     }
@@ -49,5 +54,4 @@ namespace mks
 
         return false;
     }
-
 }

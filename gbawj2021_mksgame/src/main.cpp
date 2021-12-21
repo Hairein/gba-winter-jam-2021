@@ -140,7 +140,7 @@ int main()
                     }
                     else
                     {
-                        main_affine_bg.get()->set_pivot_position(ingame.get()->get_map_position());
+                        main_affine_bg.get()->set_pivot_position(ingame.get()->get_map_center());
                         main_affine_bg.get()->set_rotation_angle(ingame.get()->get_map_yaw());
                     }
                 }

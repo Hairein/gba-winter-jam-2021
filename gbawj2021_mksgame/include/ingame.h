@@ -10,33 +10,32 @@
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
 #include "bn_memory.h"
+#include "bn_random.h"
 
 #include "globals.h"
 
-#include "vector_helper.h"
-#include "map_helper.h"
-
-#include "explosion_handler.h"
-#include "hit_handler.h"
-#include "crater_handler.h"
-#include "player_shot_handler.h"
-
-#include "enemy_turret_handler.h"
-#include "enemy_tank_handler.h"
-#include "enemy_helicopter_handler.h"
-
-#include "pow_cage_handler.h"
-#include "pow_handler.h"
-
-#include "compass.h"
-#include "health_display.h"
-#include "pows_left_display.h"
-#include "rtb_message_display.h"
-
-#include "player_helicopter.h"
 
 namespace mks
 {
+    class VectorHelper;
+    class MapHelper;
+
+    class EnemyTurretHandler;
+    class EnemyTankHandler;
+    class EnemyHelicopterHandler;
+    class PowCageHandler;
+    class PowHandler;
+    class ExplosionHandler;
+    class HitHandler;
+    class PlayerShotHandler;
+    class CraterHandler;
+
+    class Compass;
+    class HealthDisplay;
+    class PowsLeftDisplay;
+    class PlayerHelicopter;
+    class RtbMessageDisplay;
+
     class Ingame
     {
     public:
@@ -47,9 +46,31 @@ namespace mks
         void shutdown();
         void update();
 
+        void log_memory(std::string msg);
+
         GameState change_game_state();
-        bn::fixed_point get_map_position();
-        bn::fixed get_map_yaw();
+        bn::fixed_point& get_map_center();
+        bn::fixed& get_map_yaw();
+
+        VectorHelper* get_vector_helper() {return vector_helper.get();};
+        MapHelper* get_map_helper() {return map_helper.get();};
+        bn::random* get_random() {return random.get();};
+
+        EnemyTurretHandler* get_enemy_turret_handler() {return enemy_turret_handler.get();};
+        EnemyTankHandler* get_enemy_tank_handler() {return enemy_tank_handler.get();};
+        EnemyHelicopterHandler* get_enemy_helicopter_handler() {return enemy_helicopter_handler.get();};
+        PowCageHandler* get_pow_cage_handler() {return pow_cage_handler.get();};
+        PowHandler* get_pow_handler() {return pow_handler.get();};
+        ExplosionHandler* get_explosion_handler() {return explosion_handler.get();};
+        HitHandler* get_hit_handler() {return hit_handler.get();};
+        PlayerShotHandler* get_player_shot_handler() {return player_shot_handler.get();};
+        CraterHandler* get_crater_handler() {return crater_handler.get();};
+
+        bn::fixed& get_player_health() {return player_health_percent;};
+        uint16_t& get_input_key_flags() {return input_key_flags;};
+        bn::fixed_point& get_ingame_center_offset() {return ingame_center_offset;};
+        int& get_pows_left() { return pows_left;};
+        void decrement_pows_left() {pows_left--;};
 
     protected:
         std::unique_ptr<VectorHelper> vector_helper;
@@ -89,8 +110,6 @@ namespace mks
         int pows_initial;
         int pows_left;
         
-        void log_memory(std::string msg);
-
         void init_gameplay();
         void spawn_entities();
         

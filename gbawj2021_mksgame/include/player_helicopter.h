@@ -14,17 +14,21 @@
 
 namespace mks
 {
+    class Ingame;
+
     class PlayerHelicopter : public UiElement
     {
     public: 
-        PlayerHelicopter();
+        PlayerHelicopter(Ingame* ingame_ptr);
         ~PlayerHelicopter();
         
         void init();
         void shutdown();
-        void update(uint16_t input_flags, bn::fixed_point& ingame_center_offset);
+        void update();
 
     protected:
+        Ingame* ingame;
+
         int rotor_counter = 0;
 
         PitchState player_pitch_state = PITCHSTATE_CENTER;
@@ -33,7 +37,7 @@ namespace mks
         int pitch_state_min = -15;
         int pitch_state_max = 15;
 
-        void evaluate_input(uint16_t input_flags);
+        void evaluate_input();
     };
 }
 

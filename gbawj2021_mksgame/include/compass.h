@@ -14,15 +14,20 @@
 
 namespace mks
 {
+    class Ingame;
+
     class Compass : public UiElement
     {
     public: 
-        Compass();
+        Compass(Ingame* ingame_ptr);
         ~Compass();
         
         void init();
         void shutdown();
-        void update(bn::fixed& map_yaw);
+        void update();
+
+    protected:
+        Ingame* ingame;
     };
 }
 

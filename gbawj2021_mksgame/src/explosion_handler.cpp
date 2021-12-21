@@ -1,9 +1,13 @@
+#include "explosion.h"
+#include "vector_helper.h"
+
 #include "explosion_handler.h"
 
 namespace mks
 {
-    ExplosionHandler::ExplosionHandler()
+    ExplosionHandler::ExplosionHandler(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     ExplosionHandler::~ExplosionHandler()
@@ -14,7 +18,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            Explosion new_explosion;
+            Explosion new_explosion(ingame);
             explosions.push_back(new_explosion);
         }
     }
@@ -24,13 +28,13 @@ namespace mks
         explosions.clear();
     }
 
-    void ExplosionHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void ExplosionHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < explosions.size(); index++)
         {
             if(explosions[index].is_active())
             {
-                explosions[index].update(vector_helper, map_center, map_yaw);
+                explosions[index].update(calculated_map_center);
             }
         }
     }

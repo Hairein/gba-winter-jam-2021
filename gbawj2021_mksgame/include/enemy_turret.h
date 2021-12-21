@@ -18,17 +18,21 @@
 
 namespace mks
 {
+    class Ingame;
+    
     class EnemyTurret : public MultiMapEntity
     {
     public: 
-        EnemyTurret();
+        EnemyTurret(Ingame* ingame_ptr);
         ~EnemyTurret();
         
         void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
-        void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
+        void update(bn::fixed_point calculated_map_center);
 
     protected:
+        Ingame* ingame;
+
         bn::fixed initial_facing_angle;
     };
 }

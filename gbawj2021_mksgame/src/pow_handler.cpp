@@ -1,9 +1,14 @@
+#include "ingame.h"
+#include "pow.h"
+#include "vector_helper.h"
+
 #include "pow_handler.h"
 
 namespace mks
 {
-    PowHandler::PowHandler()
+    PowHandler::PowHandler(Ingame* ingame_ptr)
     {
+        ingame = ingame_ptr;
     }
 
     PowHandler::~PowHandler()
@@ -14,7 +19,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            Pow new_pow;
+            Pow new_pow(ingame);
             pows.push_back(new_pow);
         }
     }
@@ -24,13 +29,13 @@ namespace mks
         pows.clear();
     }
 
-    void PowHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void PowHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < pows.size(); index++)
         {
             if(pows[index].is_active())
             {
-                pows[index].update(vector_helper, map_center, map_yaw);
+                pows[index].update(calculated_map_center);
             }
         }
     }

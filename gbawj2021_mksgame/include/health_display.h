@@ -15,17 +15,21 @@
 
 namespace mks
 {
+    class Ingame;
+
     class HealthDisplay : public MultiUiElement
     {
     public: 
-        HealthDisplay();
+        HealthDisplay(Ingame* ingame_ptr);
         ~HealthDisplay();
         
-        void init(bn::fixed& player_health);
+        void init();
         void shutdown();
-        void update(bn::fixed& player_health);
+        void update();
     
     protected:
+        Ingame* ingame;
+
         bn::fixed last_health_value;
     };
 }

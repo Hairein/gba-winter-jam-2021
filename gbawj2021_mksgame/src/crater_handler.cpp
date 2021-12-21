@@ -1,9 +1,13 @@
+#include "ingame.h"
+#include "crater.h"
+
 #include "crater_handler.h"
 
 namespace mks
 {
-    CraterHandler::CraterHandler()
+    CraterHandler::CraterHandler(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     CraterHandler::~CraterHandler()
@@ -14,7 +18,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            Crater new_crater;
+            Crater new_crater(ingame);
             craters.push_back(new_crater);
         }
     }
@@ -24,24 +28,24 @@ namespace mks
         craters.clear();
     }
 
-    void CraterHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void CraterHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < craters.size(); index++)
         {
             if(craters[index].is_active())
             {
-                craters[index].update(vector_helper, map_center, map_yaw);
+                craters[index].update(calculated_map_center);
             }
         }
     }
 
-    bool CraterHandler::spawn(std::unique_ptr<bn::random>& random, bn::fixed_point& map_position)
+    bool CraterHandler::spawn(bn::fixed_point& map_position)
     {
         for(size_t index = 0; index < craters.size(); index++)
          {
             if(!craters[index].is_active())
             {
-                craters[index].init(random, map_position);
+                craters[index].init(map_position);
                 
                 return true;
             }

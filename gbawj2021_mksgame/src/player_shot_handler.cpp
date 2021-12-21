@@ -1,9 +1,13 @@
+#include "ingame.h"
+#include "player_shot.h"
+
 #include "player_shot_handler.h"
 
 namespace mks
 {
-    PlayerShotHandler::PlayerShotHandler()
+    PlayerShotHandler::PlayerShotHandler(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     PlayerShotHandler::~PlayerShotHandler()
@@ -14,7 +18,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            PlayerShot new_shot;
+            PlayerShot new_shot(ingame);
             shots.push_back(new_shot);
         }
     }
@@ -24,13 +28,13 @@ namespace mks
         shots.clear();
     }
 
-    void PlayerShotHandler::update(std::unique_ptr<VectorHelper>& vector_helper, std::unique_ptr<HitHandler>& hit_handler, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void PlayerShotHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < shots.size(); index++)
         {
             if(shots[index].is_active())
             {
-                shots[index].update(vector_helper, hit_handler, map_center, map_yaw);
+                shots[index].update(calculated_map_center);
             }
         }
     }

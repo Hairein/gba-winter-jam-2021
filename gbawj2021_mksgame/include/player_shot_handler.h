@@ -12,25 +12,27 @@
 #include "bn_vector.h"
 
 #include "globals.h"
-#include "player_shot.h"
-#include "vector_helper.h"
-#include "hit_handler.h"
 
 namespace mks
 {
+    class Ingame;
+    class PlayerShot;
+    
     class PlayerShotHandler
     {
     public: 
-        PlayerShotHandler();
+        PlayerShotHandler(Ingame* ingame_ptr);
         ~PlayerShotHandler();
         
         void init();
         void shutdown();
-        void update(std::unique_ptr<VectorHelper>& vector_helper, std::unique_ptr<HitHandler>& hit_handler, bn::fixed_point& map_center, bn::fixed& map_yaw);
+        void update(bn::fixed_point calculated_map_center);
        
         bool spawn(bn::fixed_point& map_position, bn::fixed& map_angle);
 
     protected:
+        Ingame* ingame;
+
         std::vector<PlayerShot> shots;
     };
 }

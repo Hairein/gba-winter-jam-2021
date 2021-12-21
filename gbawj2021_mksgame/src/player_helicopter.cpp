@@ -1,9 +1,13 @@
+#include "ingame.h"
+
 #include "player_helicopter.h"
 
 namespace mks
 {
-    PlayerHelicopter::PlayerHelicopter()
+    PlayerHelicopter::PlayerHelicopter(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
+
         active = false;
     }
 
@@ -23,11 +27,11 @@ namespace mks
         UiElement::shutdown();     
     }
 
-    void PlayerHelicopter::update(uint16_t input_flags,bn::fixed_point& ingame_center_offset)
+    void PlayerHelicopter::update()
     {
         UiElement::update(); 
 
-        evaluate_input(input_flags);
+        evaluate_input();
 
         int pitch_offset = 0;
         if(player_pitch_state == PITCHSTATE_FORWARD_HALF) pitch_offset = 3;
@@ -46,6 +50,7 @@ namespace mks
             default: sprite_index = pitch_offset + 1; break;
         }
 
+        auto ingame_center_offset = ingame->get_ingame_center_offset();
         set_sprite(bn::sprite_items::player_heli1.create_sprite_optional(ingame_center_offset.x(), ingame_center_offset.y(), sprite_index));
         set_z_order(2);
 
@@ -53,8 +58,10 @@ namespace mks
         while(rotor_counter >= MAX_PLAYER_ROTOR_INDEX) rotor_counter -= MAX_PLAYER_ROTOR_INDEX; 
     }
 
-    void PlayerHelicopter::evaluate_input(uint16_t input_flags)
+    void PlayerHelicopter::evaluate_input()
     {
+        auto input_flags = ingame->get_input_key_flags();
+
         // Up/Down
         if(input_flags & INPUT_DOWN)
         {

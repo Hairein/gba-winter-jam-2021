@@ -1,9 +1,14 @@
+#include "vector_helper.h"
+#include "ingame.h"
+#include "hit_handler.h"
+
 #include "player_shot.h"
 
 namespace mks
 {
-    PlayerShot::PlayerShot()
+    PlayerShot::PlayerShot(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     PlayerShot::~PlayerShot()
@@ -28,7 +33,7 @@ namespace mks
         MapEntity::shutdown();
     }
 
-    void PlayerShot::update(std::unique_ptr<VectorHelper>& vector_helper, std::unique_ptr<HitHandler>& hit_handler, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void PlayerShot::update(bn::fixed_point calculated_map_center)
     {
         MapEntity::update();
 
@@ -39,7 +44,7 @@ namespace mks
 
         if(lifetime <= 0)
         {
-            hit_handler.get()->spawn(position, angle);
+            ingame->get_hit_handler()->spawn(position, angle);
             
             shutdown();
             return;
@@ -52,7 +57,7 @@ namespace mks
 
         bn::fixed_point new_sprite_position;
         bn::fixed new_sprite_rotation;
-        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, position, angle, new_sprite_position, new_sprite_rotation);
+        ingame->get_vector_helper()->calculate_sprite_position_angle(calculated_map_center, ingame->get_map_yaw(), position, angle, new_sprite_position, new_sprite_rotation);
 
         if(frame_hold_counter >= SHORT_FRAME_HOLD)
         {
@@ -73,7 +78,7 @@ namespace mks
 
         lifetime--;
 
-        bn::fixed_point direction = vector_helper.get()->get_rotated_unit_vector_y(angle.floor_integer());
+        bn::fixed_point direction = ingame->get_vector_helper()->get_rotated_unit_vector_y(angle.floor_integer());
         direction *= bn::fixed(SHOT_VELOCITY);
         position += direction;
     }

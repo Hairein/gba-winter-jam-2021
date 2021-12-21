@@ -13,21 +13,25 @@
 
 #include "globals.h"
 #include "map_entity.h"
-#include "vector_helper.h"
 
 namespace mks
 {
+    class Ingame;
+    class VectorHelper;
+
     class EnemyHelicopter : public MapEntity
     {
     public: 
-        EnemyHelicopter();
+        EnemyHelicopter(Ingame* ingame_ptr);
         ~EnemyHelicopter();
         
         void init(bn::fixed_point& new_position, bn::fixed& new_angle);
         void shutdown();
-        void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
+        void update(bn::fixed_point calculated_map_center);
 
     protected:
+        Ingame* ingame;
+
         bn::fixed initial_facing_angle;
     };
 }

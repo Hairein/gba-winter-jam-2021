@@ -12,24 +12,27 @@
 #include "bn_vector.h"
 
 #include "globals.h"
-#include "crater.h"
-#include "vector_helper.h"
 
 namespace mks
 {
+    class Ingame;
+    class Crater;
+    
     class CraterHandler
     {
     public: 
-        CraterHandler();
+        CraterHandler(Ingame* ingame_ptr);
         ~CraterHandler();
         
         void init();
         void shutdown();
-        void update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw);
+        void update(bn::fixed_point calculated_map_center);
        
-        bool spawn(std::unique_ptr<bn::random>& random, bn::fixed_point& map_position);
+        bool spawn(bn::fixed_point& map_position);
 
     protected:
+        Ingame* ingame;
+
         std::vector<Crater> craters;
     };
 }

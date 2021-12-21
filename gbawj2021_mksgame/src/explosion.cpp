@@ -1,9 +1,13 @@
+#include "vector_helper.h"
+#include "ingame.h"
+
 #include "explosion.h"
 
 namespace mks
 {
-    Explosion::Explosion()
+    Explosion::Explosion(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     Explosion::~Explosion()
@@ -26,7 +30,7 @@ namespace mks
         MapEntity::shutdown();
     }
 
-    void Explosion::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void Explosion::update(bn::fixed_point calculated_map_center)
     {
         MapEntity::update();
 
@@ -43,7 +47,7 @@ namespace mks
 
         bn::fixed_point new_sprite_position;
         bn::fixed new_sprite_rotation;
-        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, position, angle, new_sprite_position, new_sprite_rotation);
+        ingame->get_vector_helper()->calculate_sprite_position_angle(calculated_map_center, ingame->get_map_yaw(), position, angle, new_sprite_position, new_sprite_rotation);
 
         if(frame_hold_counter >= SHORT_FRAME_HOLD)
         {

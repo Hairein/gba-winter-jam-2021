@@ -1,9 +1,13 @@
+#include "enemy_turret.h"
+#include "vector_helper.h"
+
 #include "enemy_turret_handler.h"
 
 namespace mks
 {
-    EnemyTurretHandler::EnemyTurretHandler()
+    EnemyTurretHandler::EnemyTurretHandler(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     EnemyTurretHandler::~EnemyTurretHandler()
@@ -14,7 +18,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            EnemyTurret new_enemy_turret;
+            EnemyTurret new_enemy_turret(ingame);
             enemy_turrets.push_back(new_enemy_turret);
         }
     }
@@ -24,13 +28,13 @@ namespace mks
         enemy_turrets.clear();
     }
 
-    void EnemyTurretHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyTurretHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < enemy_turrets.size(); index++)
         {
             if(enemy_turrets[index].is_active())
             {
-                enemy_turrets[index].update(vector_helper, map_center, map_yaw);
+                enemy_turrets[index].update(calculated_map_center);
             }
         }
     }

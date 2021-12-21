@@ -1,10 +1,14 @@
+#include "vector_helper.h"
+#include "ingame.h"
+
 #include "enemy_tank.h"
 
 namespace mks
 {
-    EnemyTank::EnemyTank()
+    EnemyTank::EnemyTank(Ingame* ingame_ptr)
         : MultiMapEntity(2)
     {
+        ingame = ingame_ptr;
     }
 
     EnemyTank::~EnemyTank()
@@ -29,7 +33,7 @@ namespace mks
         MultiMapEntity::shutdown();
     }
 
-    void EnemyTank::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyTank::update(bn::fixed_point calculated_map_center)
     {
         MultiMapEntity::update();
 
@@ -42,8 +46,8 @@ namespace mks
 
         bn::fixed_point new_sprite_position[2];
         bn::fixed new_sprite_rotation[2];
-        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, positions[0], angles[0], new_sprite_position[0], new_sprite_rotation[0]);
-        vector_helper.get()->calculate_sprite_position_angle(map_center, map_yaw, positions[1], angles[1], new_sprite_position[1], new_sprite_rotation[1]);
+        ingame->get_vector_helper()->calculate_sprite_position_angle(calculated_map_center, ingame->get_map_yaw(), positions[0], angles[0], new_sprite_position[0], new_sprite_rotation[0]);
+        ingame->get_vector_helper()->calculate_sprite_position_angle(calculated_map_center, ingame->get_map_yaw(), positions[1], angles[1], new_sprite_position[1], new_sprite_rotation[1]);
 
         set_sprite(0, bn::sprite_items::enemy_tank_tracks.create_sprite_optional(new_sprite_position[0].x(), new_sprite_position[0].y(), 0));
         sprites[0].get()->set_z_order(4);

@@ -1,9 +1,14 @@
+#include "ingame.h"
+#include "hit.h"
+#include "vector_helper.h"
+
 #include "hit_handler.h"
 
 namespace mks
 {
-    HitHandler::HitHandler()
+    HitHandler::HitHandler(Ingame* ingame_ptr)
     {
+        this->ingame = ingame_ptr;
     }
 
     HitHandler::~HitHandler()
@@ -14,7 +19,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            Hit new_hit;
+            Hit new_hit(ingame);
             hits.push_back(new_hit);
         }
     }
@@ -24,13 +29,13 @@ namespace mks
         hits.clear();
     }
 
-    void HitHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void HitHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < hits.size(); index++)
         {
             if(hits[index].is_active())
             {
-                hits[index].update(vector_helper, map_center, map_yaw);
+                hits[index].update(calculated_map_center);
             }
         }
     }

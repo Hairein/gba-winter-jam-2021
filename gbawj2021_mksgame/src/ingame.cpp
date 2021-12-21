@@ -1,6 +1,28 @@
 #include "bn_keypad.h"
 #include "bn_log.h"
 
+#include "vector_helper.h"
+#include "map_helper.h"
+
+#include "explosion_handler.h"
+#include "hit_handler.h"
+#include "crater_handler.h"
+#include "player_shot_handler.h"
+
+#include "enemy_turret_handler.h"
+#include "enemy_tank_handler.h"
+#include "enemy_helicopter_handler.h"
+
+#include "pow_cage_handler.h"
+#include "pow_handler.h"
+
+#include "compass.h"
+#include "health_display.h"
+#include "pows_left_display.h"
+#include "rtb_message_display.h"
+
+#include "player_helicopter.h"
+
 #include "ingame.h"
 
 namespace mks
@@ -80,12 +102,12 @@ namespace mks
         BN_LOG("---", msg.c_str());
     }
 
-    bn::fixed_point Ingame::get_map_position()
+    bn::fixed_point& Ingame::get_map_center()
     {
         return map_center;
     }
 
-    bn::fixed Ingame::get_map_yaw()
+    bn::fixed& Ingame::get_map_yaw()
     {
         return map_yaw;
     }
@@ -234,31 +256,31 @@ namespace mks
 
     void Ingame::init_map()
     {
-        enemy_turret_handler.reset(new EnemyTurretHandler());
+        enemy_turret_handler.reset(new EnemyTurretHandler(this));
         enemy_turret_handler.get()->init(); 
 
-        enemy_tank_handler.reset(new EnemyTankHandler());
+        enemy_tank_handler.reset(new EnemyTankHandler(this));
         enemy_tank_handler.get()->init();
 
-        enemy_helicopter_handler.reset(new EnemyHelicopterHandler());
+        enemy_helicopter_handler.reset(new EnemyHelicopterHandler(this));
         enemy_helicopter_handler.get()->init();
 
-        pow_cage_handler.reset(new PowCageHandler());
+        pow_cage_handler.reset(new PowCageHandler(this));
         pow_cage_handler.get()->init();        
 
-        pow_handler.reset(new PowHandler());
+        pow_handler.reset(new PowHandler(this));
         pow_handler.get()->init();
 
-        explosion_handler.reset(new ExplosionHandler());
+        explosion_handler.reset(new ExplosionHandler(this));
         explosion_handler.get()->init();
 
-        hit_handler.reset(new HitHandler());
+        hit_handler.reset(new HitHandler(this));
         hit_handler.get()->init();
 
-        player_shot_handler.reset(new PlayerShotHandler());
+        player_shot_handler.reset(new PlayerShotHandler(this));
         player_shot_handler.get()->init();
 
-        crater_handler.reset(new CraterHandler());
+        crater_handler.reset(new CraterHandler(this));
         crater_handler.get()->init();
 
         last_player_shot = PLAYER_SHOT_INTERVAL;
@@ -277,19 +299,18 @@ namespace mks
         {
             if(last_player_shot < PLAYER_SHOT_INTERVAL) last_player_shot++;
         }
-
         auto rotated_ingame_center_offset = vector_helper.get()->rotate_vector(ingame_center_offset, map_yaw);
         auto calculated_ingame_map_center = map_center - rotated_ingame_center_offset;
 
-        enemy_turret_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        enemy_tank_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        enemy_helicopter_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        pow_cage_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        pow_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        explosion_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        hit_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
-        player_shot_handler.get()->update(vector_helper, hit_handler, calculated_ingame_map_center, map_yaw);
-        crater_handler.get()->update(vector_helper, calculated_ingame_map_center, map_yaw);
+        enemy_turret_handler.get()->update(calculated_ingame_map_center);
+        enemy_tank_handler.get()->update(calculated_ingame_map_center);
+        enemy_helicopter_handler.get()->update(calculated_ingame_map_center);
+        pow_cage_handler.get()->update(calculated_ingame_map_center);
+        pow_handler.get()->update(calculated_ingame_map_center);
+        explosion_handler.get()->update(calculated_ingame_map_center);
+        hit_handler.get()->update(calculated_ingame_map_center);
+        player_shot_handler.get()->update(calculated_ingame_map_center);
+        crater_handler.get()->update(calculated_ingame_map_center);
 
         // Check for ending mission
         if(pows_left == 0)
@@ -336,14 +357,14 @@ namespace mks
 
     void Ingame::init_ui()
     {
-        player_helicopter.reset(new PlayerHelicopter());
+        player_helicopter.reset(new PlayerHelicopter(this));
         player_helicopter.get()->init();
 
-        compass.reset(new Compass());
+        compass.reset(new Compass(this));
         compass.get()->init();
 
-        health_display.reset(new HealthDisplay());
-        health_display.get()->init(player_health_percent);
+        health_display.reset(new HealthDisplay(this));
+        health_display.get()->init();
 
         pows_left_display.reset(new PowsLeftDisplay());
         pows_left_display.get()->init(pows_left);
@@ -354,9 +375,9 @@ namespace mks
 
     void Ingame::update_ui()
     {
-        player_helicopter.get()->update(input_key_flags, ingame_center_offset);
-        compass.get()->update(map_yaw);
-        health_display.get()->update(player_health_percent);
+        player_helicopter.get()->update();
+        compass.get()->update();
+        health_display.get()->update();
         pows_left_display.get()->update(pows_left);
         rtb_message_display.get()->update(pows_left == 0);
    }

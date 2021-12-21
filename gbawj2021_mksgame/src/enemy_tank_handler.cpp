@@ -1,9 +1,13 @@
+#include "enemy_tank.h"
+#include "vector_helper.h"
+
 #include "enemy_tank_handler.h"
 
 namespace mks
 {
-    EnemyTankHandler::EnemyTankHandler()
+    EnemyTankHandler::EnemyTankHandler(Ingame* ingame_ptr)
     {
+        ingame = ingame_ptr;
     }
 
     EnemyTankHandler::~EnemyTankHandler()
@@ -14,7 +18,7 @@ namespace mks
     {
         for(int index = 0; index < DEFAULT_SPRITE_VECTOR_SIZE; index++)
         {
-            EnemyTank new_enemy_turret;
+            EnemyTank new_enemy_turret(ingame);
             enemy_tanks.push_back(new_enemy_turret);
         }
     }
@@ -24,13 +28,13 @@ namespace mks
         enemy_tanks.clear();
     }
 
-    void EnemyTankHandler::update(std::unique_ptr<VectorHelper>& vector_helper, bn::fixed_point& map_center, bn::fixed& map_yaw)
+    void EnemyTankHandler::update(bn::fixed_point calculated_map_center)
     {
         for(size_t index = 0; index < enemy_tanks.size(); index++)
         {
             if(enemy_tanks[index].is_active())
             {
-                enemy_tanks[index].update(vector_helper, map_center, map_yaw);
+                enemy_tanks[index].update(calculated_map_center);
             }
         }
     }
