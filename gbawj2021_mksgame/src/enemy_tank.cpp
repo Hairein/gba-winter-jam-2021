@@ -27,7 +27,7 @@ namespace mks
         positions[1] = new_position;
         angles[1] = new_angle;
 
-        initial_facing_angle = new_angle;
+        initial_angle = new_angle;
 
         health = TANK_MAX_HEALTH;
     }
@@ -74,5 +74,10 @@ namespace mks
     void EnemyTank::take_damage(bn::fixed damage)
     {
         health -= damage;
+    }
+
+    void EnemyTank::set_tactics_behaviour(TacticsBehaviour new_tactics_behaviour)
+    {
+        tactics_behaviour = new_tactics_behaviour;
     }
 }

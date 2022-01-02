@@ -17,8 +17,8 @@ namespace mks
         Title();
         ~Title();
         
-        void init();
-        void shutdown();
+        void init(int stored_menu_index);
+        void shutdown(int& stored_menu_index);
         void update();
 
         GameState change_game_state();

@@ -788,4 +788,29 @@ namespace mks
         auto offset = position2 - position1;
         return bn::sqrt((offset.x() * offset.x()) + (offset.y() * offset.y()));
     }   
+
+    bn::fixed VectorHelper::get_vector_length(bn::fixed_point vector)
+    {
+        return bn::sqrt((vector.x() * vector.x()) + (vector.y() * vector.y()));
+    }
+
+    bn::fixed VectorHelper::get_angle(bn::fixed_point source, bn::fixed_point target)
+    {
+        bn::fixed_point vector1(0,1);
+        bn::fixed_point vector2 = target - source;
+        bn::fixed_point unit_vector2 = vector2 / get_vector_length(vector2);
+
+        // Warning! The following is NOT in any way mathematically correct ;-)
+        auto dot_product = vector1.x() * unit_vector2.x() + vector1.y() * unit_vector2.y();
+        auto linear_value = (bn::fixed(1) + dot_product) * bn::fixed(90);
+
+        if(vector2.x() >= bn::fixed(0))
+        {
+            linear_value = bn::fixed(360) - linear_value;
+        }
+        while (linear_value < bn::fixed(0)) linear_value += bn::fixed(360);
+        while (linear_value >= bn::fixed(360)) linear_value -= bn::fixed(360);
+        
+        return linear_value; 
+    }   
 }

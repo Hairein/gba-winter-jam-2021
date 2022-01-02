@@ -18,8 +18,10 @@ namespace mks
     {
     }
         
-    void Title::init()
+    void Title::init(int stored_menu_index)
     {
+        menu_index = stored_menu_index;
+        
         next_game_state = GameState::GAMESTATE_NONE;
 
         text_main_menu_version = bn::sprite_items::text_version.create_sprite_optional(-100,-68);
@@ -33,8 +35,10 @@ namespace mks
         update_cursor();
     }
 
-    void Title::shutdown()
+    void Title::shutdown(int& stored_menu_index)
     {
+        stored_menu_index = menu_index;
+
         text_main_menu_version.reset();
         button_a_sprite.reset();
         button_main_menu_start_sprite.reset();

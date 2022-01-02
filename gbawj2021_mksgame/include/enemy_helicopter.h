@@ -31,10 +31,14 @@ namespace mks
 
         void take_damage(bn::fixed damage);
 
+        void set_tactics_behaviour(TacticsBehaviour new_tactics_behaviour);
+
     protected:
         Ingame* ingame;
 
-        bn::fixed initial_facing_angle;
+        bn::fixed initial_angle;
+        bn::fixed_point initial_position;
+        TacticsBehaviour tactics_behaviour;
         bn::fixed health;
     };
 }

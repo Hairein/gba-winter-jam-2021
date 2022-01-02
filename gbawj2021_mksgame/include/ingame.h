@@ -28,6 +28,7 @@ namespace mks
     class ExplosionHandler;
     class HitHandler;
     class PlayerShotHandler;
+    class EnemyShotHandler;
     class CraterHandler;
 
     class Compass;
@@ -64,6 +65,7 @@ namespace mks
         ExplosionHandler* get_explosion_handler() {return explosion_handler.get();};
         HitHandler* get_hit_handler() {return hit_handler.get();};
         PlayerShotHandler* get_player_shot_handler() {return player_shot_handler.get();};
+        EnemyShotHandler* get_enemy_shot_handler() {return enemy_shot_handler.get();};
         CraterHandler* get_crater_handler() {return crater_handler.get();};
 
         bn::fixed& get_player_health() {return player_health;};
@@ -85,6 +87,7 @@ namespace mks
         std::unique_ptr<ExplosionHandler> explosion_handler;
         std::unique_ptr<HitHandler> hit_handler;
         std::unique_ptr<PlayerShotHandler> player_shot_handler;
+        std::unique_ptr<EnemyShotHandler> enemy_shot_handler;
         std::unique_ptr<CraterHandler> crater_handler;
 
         std::unique_ptr<Compass> compass;

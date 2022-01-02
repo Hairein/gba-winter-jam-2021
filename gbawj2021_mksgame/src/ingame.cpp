@@ -8,6 +8,7 @@
 #include "hit_handler.h"
 #include "crater_handler.h"
 #include "player_shot_handler.h"
+#include "enemy_shot_handler.h"
 
 #include "enemy_turret_handler.h"
 #include "enemy_tank_handler.h"
@@ -280,6 +281,9 @@ namespace mks
         player_shot_handler.reset(new PlayerShotHandler(this));
         player_shot_handler.get()->init();
 
+        enemy_shot_handler.reset(new EnemyShotHandler(this));
+        enemy_shot_handler.get()->init();
+
         crater_handler.reset(new CraterHandler(this));
         crater_handler.get()->init();
 
@@ -311,6 +315,7 @@ namespace mks
         explosion_handler.get()->update(calculated_ingame_map_center);
         hit_handler.get()->update(calculated_ingame_map_center);
         player_shot_handler.get()->update(calculated_ingame_map_center);
+        enemy_shot_handler.get()->update(calculated_ingame_map_center);
         crater_handler.get()->update(calculated_ingame_map_center);
 
         // Check for ending mission
@@ -351,6 +356,9 @@ namespace mks
 
         player_shot_handler.get()->shutdown();
         player_shot_handler.reset();
+
+        enemy_shot_handler.get()->shutdown();
+        enemy_shot_handler.reset();
 
         crater_handler.get()->shutdown();
         crater_handler.reset();

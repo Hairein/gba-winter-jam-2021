@@ -35,8 +35,11 @@ namespace mks
     protected:
         Ingame* ingame;
 
-        bn::fixed initial_facing_angle;
+        bn::fixed initial_angle;
+        bn::fixed current_angle;
         bn::fixed health;
+
+        int last_shot;
     };
 }
 

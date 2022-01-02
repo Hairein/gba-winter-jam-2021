@@ -24,6 +24,8 @@ namespace mks
         int calculate_sprite_index_from_facing(int facing_angle);
 
         bn::fixed get_distance(bn::fixed_point position1, bn::fixed_point position2);
+        bn::fixed get_vector_length(bn::fixed_point vector);
+        bn::fixed get_angle(bn::fixed_point source, bn::fixed_point target);
     };
 }
 

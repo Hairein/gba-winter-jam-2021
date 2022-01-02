@@ -24,6 +24,7 @@
 #include "bn_regular_bg_items_map_view.h"
 #include "bn_regular_bg_items_credits.h"
 #include "bn_regular_bg_items_title.h"
+#include "bn_regular_bg_items_layout.h"
 
 #include "globals.h"
 
@@ -37,6 +38,7 @@ int main();
 void move_to_game_state(GameState new_game_state, 
     GameState& previous_game_state, 
     GameState& current_game_state,
+    int& stored_menu_index,
     bn::optional<bn::affine_bg_ptr>& affine_bg,
     bn::optional<bn::regular_bg_ptr>& regular_bg,
     std::unique_ptr<mks::Credits>& credits,
@@ -70,9 +72,12 @@ int main()
     GameState previous_game_state = GameState::GAMESTATE_NONE;
     GameState current_game_state = GameState::GAMESTATE_NONE;
 
+    int stored_menu_index = 0;
+
     move_to_game_state(GameState::GAMESTATE_INIT, 
         previous_game_state, 
         current_game_state, 
+        stored_menu_index,
         main_affine_bg, 
         main_regular_bg,
         credits,
@@ -90,6 +95,7 @@ int main()
                     move_to_game_state(GameState::GAMESTATE_TITLE, 
                         previous_game_state, 
                         current_game_state, 
+                        stored_menu_index,
                         main_affine_bg, 
                         main_regular_bg,
                         credits,
@@ -108,6 +114,7 @@ int main()
                         move_to_game_state(credits.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
+                            stored_menu_index,
                             main_affine_bg, 
                             main_regular_bg,
                             credits,
@@ -130,6 +137,7 @@ int main()
                         move_to_game_state(ingame.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
+                            stored_menu_index,
                             main_affine_bg, 
                             main_regular_bg,
                             credits,
@@ -154,6 +162,7 @@ int main()
                         move_to_game_state(start_game.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
+                            stored_menu_index,
                             main_affine_bg, 
                             main_regular_bg,
                             credits,
@@ -176,6 +185,7 @@ int main()
                         move_to_game_state(settings.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
+                            stored_menu_index,
                             main_affine_bg, 
                             main_regular_bg,
                             credits,
@@ -198,6 +208,7 @@ int main()
                         move_to_game_state(title.get()->change_game_state(), 
                             previous_game_state, 
                             current_game_state, 
+                            stored_menu_index,
                             main_affine_bg, 
                             main_regular_bg,
                             credits,
@@ -226,6 +237,7 @@ int main()
 void move_to_game_state(GameState new_game_state, 
     GameState& previous_game_state, 
     GameState& current_game_state,
+    int& stored_menu_index,
     bn::optional<bn::affine_bg_ptr>& affine_bg,
     bn::optional<bn::regular_bg_ptr>& regular_bg,
     std::unique_ptr<mks::Credits>& credits,
@@ -243,7 +255,7 @@ void move_to_game_state(GameState new_game_state,
                 
                 regular_bg.reset();
 
-                title.get()->shutdown();
+                title.get()->shutdown(stored_menu_index);
                 title.reset();
             }
             break;
@@ -304,7 +316,7 @@ void move_to_game_state(GameState new_game_state,
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 
                 title.reset(new mks::Title());
-                title.get()->init();
+                title.get()->init(stored_menu_index);
             }
             break;
         case GameState::GAMESTATE_START_GAME:
@@ -325,7 +337,7 @@ void move_to_game_state(GameState new_game_state,
                 affine_bg.reset();
                 
                 regular_bg.reset();
-                regular_bg = bn::regular_bg_items::map_view.create_bg(0,0);
+                regular_bg = bn::regular_bg_items::layout.create_bg(0,0);
                 regular_bg.get()->set_priority(3); 
                 regular_bg.get()->set_position(bn::fixed(0), bn::fixed(0)); 
 

@@ -25,7 +25,7 @@ namespace mks
         position = new_position;
         angle = new_angle;
 
-        initial_facing_angle = new_angle;
+        initial_angle = new_angle;
 
         health = HELICOPTER_MAX_HEALTH;
     }
@@ -67,5 +67,10 @@ namespace mks
     void EnemyHelicopter::take_damage(bn::fixed damage)
     {
         health -= damage;
+    }
+
+    void EnemyHelicopter::set_tactics_behaviour(TacticsBehaviour new_tactics_behaviour)
+    {
+        tactics_behaviour = new_tactics_behaviour;
     }
 }
